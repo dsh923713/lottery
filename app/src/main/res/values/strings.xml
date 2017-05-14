@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">博彩</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="your_name">用户名:</string>
+    <string name="your_password">密　码:</string>
+    <string name="your_name_hint">请输入您的用户名</string>
+    <string name="your_password_hint">请输入您的密码</string>
+    <string name="login_up">登录</string>
+    <string name="register_user">注册新用户</string>
+</resources>
