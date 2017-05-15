@@ -6,9 +6,13 @@
 
     <com.bigkoo.convenientbanner.ConvenientBanner
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/convenientBanner"
+        android:id="@+id/cb_home_top"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:canLoop="true"/>
-    
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rlv_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>
