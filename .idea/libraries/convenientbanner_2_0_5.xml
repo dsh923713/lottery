@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="convenientbanner-2.0.5">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/fc88d175c3b3b0e13f250b616eca6601a1a0f3d6/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/fc88d175c3b3b0e13f250b616eca6601a1a0f3d6/output/res" />
+      <root url="file://$USER_HOME$/.android/build-cache/55413c0794d9ec7d9f57838b1783b931b3d3b4e3/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/55413c0794d9ec7d9f57838b1783b931b3d3b4e3/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

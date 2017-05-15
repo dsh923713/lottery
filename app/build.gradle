@@ -49,4 +49,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     //底部导航栏
     compile 'com.jpeng:JPTabBar:1.2.3'
+    //recyclerview万能适配器
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.15'
 }
