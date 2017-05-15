@@ -25,19 +25,24 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    //圆形控件
-    //GSON解析JSON
-    //图片加载库
-    //广告轮播栏控件
-    //Android 6.0运行时权限管理
+
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:support-vector-drawable:25.3.1'
+    //圆形控件
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    //GSON解析JSON
     compile 'com.google.code.gson:gson:2.8.0'
+    //图片加载库
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    //广告轮播栏控件
     compile 'com.bigkoo:convenientbanner:2.0.5'
+    //Android 6.0运行时权限管理
     compile 'com.yanzhenjie:permission:1.0.7'
+    //butterknife注解
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }

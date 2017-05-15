@@ -12,4 +12,18 @@
     <string name="your_password_hint">请输入您的密码</string>
     <string name="login_up">登录</string>
     <string name="register_user">注册新用户</string>
+
+    <!--String related to register-->
+    <string name="register_phone">手机号</string>
+    <string name="register_password">密码</string>
+    <string name="sure_register_password">确认密码</string>
+    <string name="register_captcha">验证码</string>
+    <string name="register_request_code">邀请码</string>
+    <string name="register_phone_hint">请输入手机号</string>
+    <string name="register_password_hint">请输入密码</string>
+    <string name="sure_register_password_hint">请再次输入密码</string>
+    <string name="register_captcha_hint">请输入验证码</string>
+    <string name="register_request_code_hint">推荐人手机号码(选填)</string>
+    <string name="get_register_captcha_code">获取验证码</string>
+    <string name="register">注册</string>
 </resources>
