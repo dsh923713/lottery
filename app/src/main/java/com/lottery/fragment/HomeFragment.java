@@ -17,7 +17,7 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lottery.R;
-import com.lottery.activity.RegisterActivity;
+import com.lottery.activity.RedPacketOxActivity;
 import com.lottery.adapter.HomeAdapter;
 import com.lottery.model.HomeModel;
 
@@ -32,25 +32,29 @@ import butterknife.ButterKnife;
  */
 
 public class HomeFragment extends BaseFragment {
+    private static final String TAG = "DSH -> HomeFragment";
     @BindView(R.id.rlv_home)
-    RecyclerView rlv_home;
+    RecyclerView rlv_home; //加载首页数据--红包牛牛等
     @BindView(R.id.cb_home_top)
-    ConvenientBanner cb_home_top;
+    ConvenientBanner cb_home_top;//头部banner
 
-    private List<Integer> imageList;
-    private List<HomeModel> homeModels = new ArrayList<>();
+    private List<Integer> imageList;//图标集合
+    private List<HomeModel> homeModels = new ArrayList<>(); //集合数据
+    private Bundle bundle;//传递参数
 
     @Override
     protected View initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);//绑定注解
         return view;
     }
 
     @Override
     protected void initView(View view) {
+        bundle = new Bundle();
         getImageList();
+        //设置头部轮播数据
         cb_home_top.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
                                  @Override
                                  public LocalImageHolderView createHolder() {
@@ -69,13 +73,41 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (position) {
-                    case 0:
+                    case 0: //北京28
+                        bundle.putString("id_name", homeModels.get(position).getTitle());
+                        startActivity(RedPacketOxActivity.class, bundle);
                         break;
-                    case 1:
+                    case 1://加拿大28
+                        bundle.putString("id_name", homeModels.get(position).getTitle());
+                        startActivity(RedPacketOxActivity.class, bundle);
                         break;
-                    case 2:
-                        startActivity(RegisterActivity.class);
+                    case 2: // 红包牛牛
+                        bundle.putString("id_name", homeModels.get(position).getTitle());
+                        startActivity(RedPacketOxActivity.class, bundle);
                         break;
+                    case 3: //重庆时时彩
+                        bundle.putString("id_name", homeModels.get(position).getTitle());
+                        startActivity(RedPacketOxActivity.class, bundle);
+                        break;
+                    case 4: //PK拾
+                        bundle.putString("id_name", homeModels.get(position).getTitle());
+                        startActivity(RedPacketOxActivity.class, bundle);
+                        break;
+                    case 5: //双色球
+                        bundle.putString("id_name", homeModels.get(position).getTitle());
+                        startActivity(RedPacketOxActivity.class, bundle);
+                        break;
+                    case 6: //超级大乐透
+                        bundle.putString("id_name", homeModels.get(position).getTitle());
+                        startActivity(RedPacketOxActivity.class, bundle);
+                        break;
+                    case 7: //11选5
+                        bundle.putString("id_name", homeModels.get(position).getTitle());
+                        startActivity(RedPacketOxActivity.class, bundle);
+                        break;
+                    case 8: //更多玩法
+                        break;
+
                 }
                 Toast.makeText(activity, "onItemClick" + position, Toast.LENGTH_SHORT).show();
             }
@@ -90,24 +122,24 @@ public class HomeFragment extends BaseFragment {
     /**
      * 添加网格数据
      */
-    private void initHomeModel(){
-        HomeModel beijing = new HomeModel(R.mipmap.ic_launcher,"北京28");
+    private void initHomeModel() {
+        HomeModel beijing = new HomeModel(R.mipmap.ic_launcher, "北京28");
         homeModels.add(beijing);
-        HomeModel canada = new HomeModel(R.mipmap.ic_launcher,"加拿大28");
+        HomeModel canada = new HomeModel(R.mipmap.ic_launcher, "加拿大28");
         homeModels.add(canada);
-        HomeModel taurus = new HomeModel(R.mipmap.ic_launcher,"红包牛牛");
+        HomeModel taurus = new HomeModel(R.mipmap.ic_launcher, "红包牛牛");
         homeModels.add(taurus);
-        HomeModel frequent_colors = new HomeModel(R.mipmap.ic_launcher,"重庆时时彩");
+        HomeModel frequent_colors = new HomeModel(R.mipmap.ic_launcher, "重庆时时彩");
         homeModels.add(frequent_colors);
-        HomeModel playkilling = new HomeModel(R.mipmap.ic_launcher,"PK拾");
+        HomeModel playkilling = new HomeModel(R.mipmap.ic_launcher, "PK拾");
         homeModels.add(playkilling);
-        HomeModel chromosphere = new HomeModel(R.mipmap.ic_launcher,"双色球");
+        HomeModel chromosphere = new HomeModel(R.mipmap.ic_launcher, "双色球");
         homeModels.add(chromosphere);
-        HomeModel lottery_ticket = new HomeModel(R.mipmap.ic_launcher,"超级大乐透");
+        HomeModel lottery_ticket = new HomeModel(R.mipmap.ic_launcher, "超级大乐透");
         homeModels.add(lottery_ticket);
-        HomeModel elevenAndfive = new HomeModel(R.mipmap.ic_launcher,"11选5");
+        HomeModel elevenAndfive = new HomeModel(R.mipmap.ic_launcher, "11选5");
         homeModels.add(elevenAndfive);
-        HomeModel morePlay = new HomeModel(R.mipmap.ic_launcher,"更多玩法");
+        HomeModel morePlay = new HomeModel(R.mipmap.ic_launcher, "更多玩法");
         homeModels.add(morePlay);
     }
 
@@ -158,7 +190,7 @@ public class HomeFragment extends BaseFragment {
             outRect.left = space;
             outRect.bottom = space;
             //由于每行都只有3个，所以第一个都是3的倍数，把左边距设为0
-            if (parent.getChildLayoutPosition(view) %3==0) {
+            if (parent.getChildLayoutPosition(view) % 3 == 0) {
                 outRect.left = 0;
             }
         }

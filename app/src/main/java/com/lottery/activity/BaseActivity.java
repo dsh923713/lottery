@@ -46,6 +46,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         initContentView(savedInstanceState);
         initView();
     }
+
+    /**
+     * Bundle  传递数据
+     *
+     * @param extras
+     */
+    protected abstract void getBundleExtras(Bundle extras);
+
     protected abstract void initContentView(Bundle bundle);//恢复数据
     protected abstract void initView();//初始化控件
 
@@ -60,12 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             StatusBarCompat.compat(this, Color.BLACK);
         }
     }
-    /**
-     * Bundle  传递数据
-     *
-     * @param extras
-     */
-    protected abstract void getBundleExtras(Bundle extras);
+
 
     /**
      * 设置标题栏返回键
