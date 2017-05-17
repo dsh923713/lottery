@@ -32,11 +32,14 @@
     <string name="together_buy">合买</string>
     <string name="recharge">充值</string>
     <string name="myself">我的</string>
-    
+
     <!--String related to myself-->
     <string name="business_record">交易记录</string>
     <string name="my_news">我的消息</string>
     <string name="contact_custom_service">联系客服</string>
     <string name="my_extend">我的推广</string>
     <string name="back_login">退出登录</string>
+
+    <string name="all">全部</string>
+    <string name="bottom_pour">下注</string>
 </resources>

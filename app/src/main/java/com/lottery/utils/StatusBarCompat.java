@@ -1,4 +1,4 @@
-package com.lottery.util;
+package com.lottery.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

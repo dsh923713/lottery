@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import com.jpeng.jptabbar.JPTabBar;
 import com.jpeng.jptabbar.OnTabSelectListener;
 import com.lottery.R;
+import com.lottery.base.BaseActivity;
 import com.lottery.fragment.HomeFragment;
 import com.lottery.fragment.PersonFragment;
 import com.lottery.fragment.RechargeFragment;

@@ -1,4 +1,4 @@
-package com.lottery.model;
+package com.lottery.bean;
 
 /**
  * Created by Administrator on 2017/5/15.

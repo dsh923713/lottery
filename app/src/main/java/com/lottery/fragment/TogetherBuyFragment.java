@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lottery.R;
+import com.lottery.base.BaseFragment;
 
 /**
  * Created by Administrator on 2017/5/15.

@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -19,7 +18,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lottery.R;
 import com.lottery.activity.RedPacketOxActivity;
 import com.lottery.adapter.HomeAdapter;
-import com.lottery.model.HomeModel;
+import com.lottery.base.BaseFragment;
+import com.lottery.bean.HomeModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +109,8 @@ public class HomeFragment extends BaseFragment {
                         break;
 
                 }
-                Toast.makeText(activity, "onItemClick" + position, Toast.LENGTH_SHORT).show();
+                showShortToast("onItemClick" + position);
+//                Toast.makeText(activity, "onItemClick" + position, Toast.LENGTH_SHORT).show();
             }
         });
     }

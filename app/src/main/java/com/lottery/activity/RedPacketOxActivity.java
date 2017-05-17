@@ -7,7 +7,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -15,6 +14,7 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lottery.R;
 import com.lottery.adapter.RedPacketOxAdapter;
+import com.lottery.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +85,7 @@ public class RedPacketOxActivity extends BaseActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Toast.makeText(RedPacketOxActivity.this, "onItemClick" + name + position, Toast.LENGTH_SHORT).show();
+                showShortToast("onItemClick" + name + position);
             }
         });
     }

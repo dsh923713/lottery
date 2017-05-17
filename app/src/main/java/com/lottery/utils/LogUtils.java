@@ -1,4 +1,4 @@
-package com.lottery.util;
+package com.lottery.utils;
 
 import android.util.Log;
 
@@ -6,7 +6,7 @@ import android.util.Log;
  * Created by Administrator on 2017/5/15 0015.
  */
 
-public class LogUtil {
+public class LogUtils {
     public static final int VERBOSE = 1;
     public static final int DEBUG = 2;
     public static final int INFO = 3;

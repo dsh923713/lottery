@@ -1,4 +1,4 @@
-package com.lottery.activity;
+package com.lottery.base;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,7 +11,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.lottery.R;
-import com.lottery.util.StatusBarCompat;
+import com.lottery.utils.StatusBarCompat;
+import com.lottery.utils.ToastUtils;
 
 /**
  * Created by Administrator on 2017/5/15 0015.
@@ -121,6 +122,24 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *  Toast显示
+     */
+    protected void showShortToast(String string) {
+        ToastUtils.showShortToast(this, string);
+    }
+
+    protected void showShortToast(int stringId) {
+        ToastUtils.showShortToast(this, stringId);
+    }
+
+    protected void showLongToast(String string) {
+        ToastUtils.showShortToast(this, string);
+    }
+
+    protected void showLongToast(int stringId) {
+        ToastUtils.showShortToast(this, stringId);
+    }
 
     /**
      * 界面跳转

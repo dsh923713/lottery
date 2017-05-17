@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.lottery.R;
+import com.lottery.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -1,4 +1,4 @@
-package com.lottery.fragment;
+package com.lottery.base;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,22 +16,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.lottery.R;
-import com.lottery.util.StatusBarCompat;
+import com.lottery.utils.StatusBarCompat;
+import com.lottery.utils.ToastUtils;
 
 /**
  * Created by Administrator on 2017/5/15 0015.
  */
 
 public abstract class BaseFragment extends Fragment {
-    protected AppCompatActivity activity;
+    protected AppCompatActivity activity; //
     protected Toolbar mToolbar;
     protected TextView tv_left, tv_title, tv_right;
     public View view;
-    private int resId;
 
-//    public BaseFragment(int resId) {
-//        this.resId = resId;
-//    }
 
     @Nullable
     @Override
@@ -64,7 +61,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.activity = (AppCompatActivity) context;
+        this.activity = (AppCompatActivity) context;//获取当前上下文联系
 
     }
 
@@ -142,6 +139,27 @@ public abstract class BaseFragment extends Fragment {
         if (listener != null) {
             tv_right.setOnClickListener(listener);
         }
+    }
+
+
+    /**
+     * Toast显示
+     * @param string
+     */
+    protected void showShortToast(String string) {
+        ToastUtils.showShortToast(getActivity(), string);
+    }
+
+    protected void showShortToast(int stringId) {
+        ToastUtils.showShortToast(getActivity(), stringId);
+    }
+
+    protected void showLongToast(String string) {
+        ToastUtils.showShortToast(getActivity(), string);
+    }
+
+    protected void showLongToast(int stringId) {
+        ToastUtils.showShortToast(getActivity(), stringId);
     }
 
     /**

@@ -3,7 +3,7 @@ package com.lottery.adapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.lottery.R;
-import com.lottery.model.HomeModel;
+import com.lottery.bean.HomeModel;
 
 import java.util.List;
 
