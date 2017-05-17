@@ -4,11 +4,11 @@ package com.lottery.bean;
  * Created by Administrator on 2017/5/15.
  */
 
-public class HomeModel {
+public class HomeBean {
     private int imageId;
     private String title;
 
-    public HomeModel(int imageId, String title){
+    public HomeBean(int imageId, String title){
         this.imageId = imageId;
         this.title = title;
     }

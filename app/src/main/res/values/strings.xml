@@ -42,4 +42,17 @@
 
     <string name="all">全部</string>
     <string name="bottom_pour">下注</string>
+    
+    <string name="lead_up">抢庄</string>
+    <string name="leading_up">抢庄中</string>
+    <string name="lead_up_time">现在是抢庄时间</string>
+    <string name="bottom_pour_record">投注记录</string>
+    <string name="select_bottom_pour_money">请选择下注金额</string>
+    <string name="hundred_money">100元</string>
+    <string name="two_hundred_money">200元</string>
+    <string name="three_hundred_money">300元</string>
+    <string name="five_hundred_money">500元</string>
+    <string name="bottom_pour_money">下注金额：￥</string>
+    <string name="sure_bottom_pour">确定下注</string>
+
 </resources>

@@ -17,7 +17,7 @@ import com.lottery.fragment.TogetherBuyFragment;
 
 public class HomeActivity extends BaseActivity {
 
-    private JPTabBar mTabbar;
+    private JPTabBar mTabbar; //底部Tab
 
     public HomeActivity() {
         super(R.layout.activity_home);

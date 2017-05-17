@@ -16,10 +16,10 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lottery.R;
-import com.lottery.activity.RedPacketOxActivity;
+import com.lottery.activity.PlayRoomActivity;
 import com.lottery.adapter.HomeAdapter;
 import com.lottery.base.BaseFragment;
-import com.lottery.bean.HomeModel;
+import com.lottery.bean.HomeBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class HomeFragment extends BaseFragment {
     ConvenientBanner cb_home_top;//头部banner
 
     private List<Integer> imageList;//图标集合
-    private List<HomeModel> homeModels = new ArrayList<>(); //集合数据
+    private List<HomeBean> homeModels = new ArrayList<>(); //集合数据
     private Bundle bundle;//传递参数
 
     @Override
@@ -75,35 +75,35 @@ public class HomeFragment extends BaseFragment {
                 switch (position) {
                     case 0: //北京28
                         bundle.putString("id_name", homeModels.get(position).getTitle());
-                        startActivity(RedPacketOxActivity.class, bundle);
+                        startActivity(PlayRoomActivity.class, bundle);
                         break;
                     case 1://加拿大28
                         bundle.putString("id_name", homeModels.get(position).getTitle());
-                        startActivity(RedPacketOxActivity.class, bundle);
+                        startActivity(PlayRoomActivity.class, bundle);
                         break;
                     case 2: // 红包牛牛
                         bundle.putString("id_name", homeModels.get(position).getTitle());
-                        startActivity(RedPacketOxActivity.class, bundle);
+                        startActivity(PlayRoomActivity.class, bundle);
                         break;
                     case 3: //重庆时时彩
                         bundle.putString("id_name", homeModels.get(position).getTitle());
-                        startActivity(RedPacketOxActivity.class, bundle);
+                        startActivity(PlayRoomActivity.class, bundle);
                         break;
                     case 4: //PK拾
                         bundle.putString("id_name", homeModels.get(position).getTitle());
-                        startActivity(RedPacketOxActivity.class, bundle);
+                        startActivity(PlayRoomActivity.class, bundle);
                         break;
                     case 5: //双色球
                         bundle.putString("id_name", homeModels.get(position).getTitle());
-                        startActivity(RedPacketOxActivity.class, bundle);
+                        startActivity(PlayRoomActivity.class, bundle);
                         break;
                     case 6: //超级大乐透
                         bundle.putString("id_name", homeModels.get(position).getTitle());
-                        startActivity(RedPacketOxActivity.class, bundle);
+                        startActivity(PlayRoomActivity.class, bundle);
                         break;
                     case 7: //11选5
                         bundle.putString("id_name", homeModels.get(position).getTitle());
-                        startActivity(RedPacketOxActivity.class, bundle);
+                        startActivity(PlayRoomActivity.class, bundle);
                         break;
                     case 8: //更多玩法
                         break;
@@ -124,23 +124,23 @@ public class HomeFragment extends BaseFragment {
      * 添加网格数据
      */
     private void initHomeModel() {
-        HomeModel beijing = new HomeModel(R.mipmap.ic_launcher, "北京28");
+        HomeBean beijing = new HomeBean(R.mipmap.ic_launcher, "北京28");
         homeModels.add(beijing);
-        HomeModel canada = new HomeModel(R.mipmap.ic_launcher, "加拿大28");
+        HomeBean canada = new HomeBean(R.mipmap.ic_launcher, "加拿大28");
         homeModels.add(canada);
-        HomeModel taurus = new HomeModel(R.mipmap.ic_launcher, "红包牛牛");
+        HomeBean taurus = new HomeBean(R.mipmap.ic_launcher, "红包牛牛");
         homeModels.add(taurus);
-        HomeModel frequent_colors = new HomeModel(R.mipmap.ic_launcher, "重庆时时彩");
+        HomeBean frequent_colors = new HomeBean(R.mipmap.ic_launcher, "重庆时时彩");
         homeModels.add(frequent_colors);
-        HomeModel playkilling = new HomeModel(R.mipmap.ic_launcher, "PK拾");
+        HomeBean playkilling = new HomeBean(R.mipmap.ic_launcher, "PK拾");
         homeModels.add(playkilling);
-        HomeModel chromosphere = new HomeModel(R.mipmap.ic_launcher, "双色球");
+        HomeBean chromosphere = new HomeBean(R.mipmap.ic_launcher, "双色球");
         homeModels.add(chromosphere);
-        HomeModel lottery_ticket = new HomeModel(R.mipmap.ic_launcher, "超级大乐透");
+        HomeBean lottery_ticket = new HomeBean(R.mipmap.ic_launcher, "超级大乐透");
         homeModels.add(lottery_ticket);
-        HomeModel elevenAndfive = new HomeModel(R.mipmap.ic_launcher, "11选5");
+        HomeBean elevenAndfive = new HomeBean(R.mipmap.ic_launcher, "11选5");
         homeModels.add(elevenAndfive);
-        HomeModel morePlay = new HomeModel(R.mipmap.ic_launcher, "更多玩法");
+        HomeBean morePlay = new HomeBean(R.mipmap.ic_launcher, "更多玩法");
         homeModels.add(morePlay);
     }
 

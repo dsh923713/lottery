@@ -10,9 +10,9 @@ import java.util.List;
  * Created by Administrator on 2017/5/16.
  */
 
-public class RedPacketOxAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-    public RedPacketOxAdapter(List<String> data) {
-        super(R.layout.item_rlv_act_redpacket, data);
+public class PlayRoomAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+    public PlayRoomAdapter(List<String> data) {
+        super(R.layout.item_rv_act_redpacket, data);
     }
 
     @Override

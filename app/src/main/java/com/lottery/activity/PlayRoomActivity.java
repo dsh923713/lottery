@@ -13,7 +13,7 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lottery.R;
-import com.lottery.adapter.RedPacketOxAdapter;
+import com.lottery.adapter.PlayRoomAdapter;
 import com.lottery.base.BaseActivity;
 
 import java.util.ArrayList;
@@ -26,8 +26,8 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/5/16.
  */
 
-public class RedPacketOxActivity extends BaseActivity {
-    private static final String TAG = "DSH -> RedPacketOxActivity";
+public class PlayRoomActivity extends BaseActivity {
+    private static final String TAG = "DSH -> PlayRoomActivity";
     @BindView(R.id.cb_redpacket_top)
     ConvenientBanner cb_redpacket_top; //头部轮播图
     @BindView(R.id.rlv_redpacket)
@@ -37,7 +37,7 @@ public class RedPacketOxActivity extends BaseActivity {
     private List<String> data = new ArrayList<>(); //数据集合
     private String name; //标题名称
 
-    public RedPacketOxActivity() {
+    public PlayRoomActivity() {
         super(R.layout.activity_redpacketox);
     }
 
@@ -78,7 +78,7 @@ public class RedPacketOxActivity extends BaseActivity {
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
 
         addData();
-        RedPacketOxAdapter adapter = new RedPacketOxAdapter(data);
+        PlayRoomAdapter adapter = new PlayRoomAdapter(data);
         GridLayoutManager layout = new GridLayoutManager(this, 2);
         rlv_redpacket.setLayoutManager(layout);
         rlv_redpacket.setAdapter(adapter);
@@ -86,6 +86,7 @@ public class RedPacketOxActivity extends BaseActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 showShortToast("onItemClick" + name + position);
+                startActivity(MsgChatActivity.class);
             }
         });
     }
