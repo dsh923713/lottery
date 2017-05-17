@@ -19,6 +19,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.shaohui.bottomdialog.BottomDialog;
 
 public class MsgChatActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.rv_msg)
@@ -62,8 +63,8 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
                 showShortToast("开发中...");
             }
         });
-        setStatusBar(ContextCompat.getColor(this,R.color.colorAccent));//改变状态栏颜色
-        toolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorAccent)); //改变toolbar颜色
+        setStatusBar(ContextCompat.getColor(this, R.color.colorAccent));//改变状态栏颜色
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent)); //改变toolbar颜色
         ButterKnife.bind(this); //绑定注入
         addData();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -92,12 +93,12 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_bottom_pour: //下注
-
+                setPopupWindow();
                 break;
             case R.id.tv_lead_up:  //抢庄
                 String content = et_msg.getText().toString().trim();
-                if (!TextUtils.isEmpty(content)){
-                    MsgBean msgBean = new MsgBean(false,content,MsgBean.TYPE_SENT,R.drawable.xiaohei);
+                if (!TextUtils.isEmpty(content)) {
+                    MsgBean msgBean = new MsgBean(false, content, MsgBean.TYPE_SENT, R.drawable.xiaohei);
                     data.add(msgBean);
                     adapter.notifyItemInserted(data.size() - 1);//当有新消息，刷新recyclerview显示
                     rv_msg.scrollToPosition(data.size() - 1);//将recyclerview定位在最后一行
@@ -105,5 +106,18 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
                 }
                 break;
         }
+    }
+
+    private void setPopupWindow() {
+        BottomDialog.create(getSupportFragmentManager()).setViewListener(new BottomDialog.ViewListener() {
+            @Override
+            public void bindView(View v) {
+                switch (v.getId()){
+                    case R.id.tv_hundred_money:
+                        showShortToast("100");
+                        break;
+                }
+            }
+        }).setLayoutRes(R.layout.dia_msg_chat).show();
     }
 }

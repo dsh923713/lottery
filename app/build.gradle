@@ -56,4 +56,6 @@ dependencies {
 
     //万能适配器
     compile 'com.zhy:base-adapter:3.0.3'
+    //底部弹窗
+    compile 'me.shaohui:bottomdialog:1.1.9'
 }
