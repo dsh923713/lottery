@@ -71,11 +71,9 @@ public class BusinessRecordActivity extends BaseActivity implements SwipeRefresh
         srl_refurbish.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent));//下拉刷新时控件的颜色
         srl_refurbish.setOnRefreshListener(this);//注册下拉刷新
         addData("张三");
-//        BusinessAdapter adapter = new BusinessAdapter(data);
         adapter = new CommonAdapter<BusinessBean>(this, R.layout.item_lv_act_business, data) {
             @Override
             protected void convert(ViewHolder viewHolder, BusinessBean item, int position) {
-                showShortToast(item.getName());
                 viewHolder.setText(R.id.tv_name, item.getName())
                         .setText(R.id.tv_style, item.getStyle())
                         .setText(R.id.tv_time, item.getDateTime())

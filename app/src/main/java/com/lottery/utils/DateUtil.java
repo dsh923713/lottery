@@ -205,4 +205,41 @@ public class DateUtil {
         String t = format.format(d);
         return t;
     }
+    /**
+     * 转换时间戳为00:00:00<br>
+     *
+     * @return
+     */
+    public static String toTime9(Long time) {
+        SimpleDateFormat format = new SimpleDateFormat(HOUR_FORMAT);
+        Date d = new Date(time);
+        String t = format.format(d);
+        return t;
+    }
+
+    /**
+     * 获取时间差的字符串形式
+     * 如：1天1时1分1秒
+     *
+     * @param time 秒
+     * @return
+     */
+    public static String getCutDown(long time) {
+
+
+        int hours = ((int) time) % (3600 * 24) / 3600;
+        int minutes = ((int) time) % (3600 * 24) % 3600 / 60;
+        int seconds = ((int) time) % (3600 * 24) % 3600 % 60 % 60;
+
+        String str = "";
+        //1天之内  只显示小时  1小时之内的 只显示分钟  1分钟之内 的只显示秒
+        if (hours != 0) {
+            str = hours + ":" + minutes + ":";
+        } else if (minutes != 0) {
+            str = minutes + ":";
+        } else {
+            str = seconds + "s";
+        }
+        return str;
+    }
 }

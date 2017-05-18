@@ -54,8 +54,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
-    //万能适配器
+    //listView万能适配器
     compile 'com.zhy:base-adapter:3.0.3'
-    //底部弹窗
-    compile 'me.shaohui:bottomdialog:1.1.9'
+    //recyclerview万能适配器简便写法
+    compile 'com.zhy:base-rvadapter:3.0.3'
 }

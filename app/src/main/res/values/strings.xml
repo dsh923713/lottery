@@ -54,5 +54,6 @@
     <string name="five_hundred_money">500元</string>
     <string name="bottom_pour_money">下注金额：￥</string>
     <string name="sure_bottom_pour">确定下注</string>
+    <string name="play_name">赢家名称：</string>
 
 </resources>

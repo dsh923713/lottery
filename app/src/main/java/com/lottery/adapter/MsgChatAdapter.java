@@ -22,7 +22,6 @@ public class MsgChatAdapter extends BaseQuickAdapter<MsgBean, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder viewHolder, MsgBean item) {
-        Log.d(TAG, "convert: " + item.getType());
         if (item.getType() == MsgBean.TYPE_RECEIVED && item.isMoney()) { //收到的下注信息
             viewHolder.setVisible(R.id.left_layout_money, true)
                     .setVisible(R.id.left_layout_msg, false)
