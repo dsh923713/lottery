@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/register_phone_hint"
+            android:inputType="phone"
             android:paddingLeft="90dp"
             android:textColorHint="@color/line_color"
             android:textSize="16sp"/>
@@ -52,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/register_password_hint"
+            android:inputType="textPassword"
             android:paddingLeft="90dp"
             android:textColorHint="@color/line_color"
             android:textSize="16sp"/>
@@ -76,6 +78,7 @@
             android:id="@+id/et_sure_register_pw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:hint="@string/sure_register_password_hint"
             android:paddingLeft="90dp"
             android:textColorHint="@color/line_color"
@@ -103,6 +106,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/register_captcha_hint"
             android:paddingLeft="90dp"
+            android:inputType="number"
             android:textColorHint="@color/line_color"
             android:textSize="16sp"/>
 
@@ -143,6 +147,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/register_request_code_hint"
+            android:inputType="number"
             android:paddingLeft="90dp"
             android:textColorHint="@color/line_color"
             android:textSize="16sp"/>

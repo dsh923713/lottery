@@ -1,9 +1,6 @@
 package com.lottery.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 
 import com.jpeng.jptabbar.JPTabBar;
@@ -18,6 +15,7 @@ import com.lottery.fragment.TogetherBuyFragment;
 public class HomeActivity extends BaseActivity {
 
     private JPTabBar mTabbar; //底部Tab
+    private static final int resId = R.id.content;
 
     public HomeActivity() {
         super(R.layout.activity_home);
@@ -38,7 +36,7 @@ public class HomeActivity extends BaseActivity {
                 .generate();
         mTabbar.setSelectedColor(ContextCompat.getColor(this, R.color.red));
         setTitle("购彩大厅");
-        replaceFragment(new HomeFragment());
+        replaceFragment(resId, new HomeFragment());
         mTabbar.setTabListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int index) {
@@ -46,22 +44,22 @@ public class HomeActivity extends BaseActivity {
                     case 0:
                         setTitle("购彩大厅");
                         toolbar.setBackgroundColor(ContextCompat.getColor(HomeActivity.this, R.color.black));
-                        replaceFragment(new HomeFragment());
+                        replaceFragment(resId, new HomeFragment());
                         break;
                     case 1:
                         setTitle("合买大厅");
                         toolbar.setBackgroundColor(ContextCompat.getColor(HomeActivity.this, R.color.colorAccent));
-                        replaceFragment(new TogetherBuyFragment());
+                        replaceFragment(resId, new TogetherBuyFragment());
                         break;
                     case 2:
                         setTitle("充值中心");
                         toolbar.setBackgroundColor(ContextCompat.getColor(HomeActivity.this, R.color.black));
-                        replaceFragment(new RechargeFragment());
+                        replaceFragment(resId, new RechargeFragment());
                         break;
                     case 3:
                         setTitle("个人中心");
                         toolbar.setBackgroundColor(ContextCompat.getColor(HomeActivity.this, R.color.colorAccent));
-                        replaceFragment(new PersonFragment());
+                        replaceFragment(resId, new PersonFragment());
                         break;
                 }
             }
@@ -73,17 +71,17 @@ public class HomeActivity extends BaseActivity {
 
     }
 
-    /**
-     * 切换fragment页面
-     *
-     * @param fragment
-     */
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction beginTransaction = fragmentManager.beginTransaction();
-        beginTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        beginTransaction.replace(R.id.content, fragment);
-        beginTransaction.commit();
-    }
+//    /**
+//     * 切换fragment页面
+//     *
+//     * @param fragment
+//     */
+//    private void replaceFragment(Fragment fragment) {
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction beginTransaction = fragmentManager.beginTransaction();
+//        beginTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//        beginTransaction.replace(R.id.content, fragment);
+//        beginTransaction.commit();
+//    }
 
 }

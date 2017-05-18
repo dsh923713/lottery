@@ -97,6 +97,7 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
         }
     };
     private int size;
+    private String content;
 
     public MsgChatActivity() {
         super(R.layout.activity_msg_chat);
@@ -235,8 +236,13 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
                 isClick5 = true;
                 break;
             case R.id.tv_sure_bottom_pour://确认下注
-                MsgBean msgBean = new MsgBean(true, et_bottom_pour_money.getText().toString(),
-                        MsgBean.TYPE_SENT, R.drawable.xiaohei);
+                content = et_bottom_pour_money.getText().toString();
+                if (TextUtils.isEmpty(content)){showShortToast("请选择要下注的金额");return;}
+                if (!content.matches("[0-9]*")){return;} //不为数字返回
+                if (!content.contains("元")){
+                    content += "元";
+                }
+                MsgBean msgBean = new MsgBean(true, content,MsgBean.TYPE_SENT, R.drawable.xiaohei);
                 data.add(msgBean);
                 adapter.notifyItemInserted(data.size() - 1);//当有新消息，刷新recyclerview显示
                 rv_msg.scrollToPosition(data.size() - 1);//将recyclerview定位在最后一行

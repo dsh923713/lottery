@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,7 @@ import com.lottery.utils.ToastUtils;
  */
 
 public abstract class BaseFragment extends Fragment {
-    protected AppCompatActivity activity; //
+    protected BaseActivity activity; //
     protected Toolbar mToolbar;
     protected TextView tv_left, tv_title, tv_right;
     public View view;
@@ -61,7 +60,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.activity = (AppCompatActivity) context;//获取当前上下文联系
+        this.activity = (BaseActivity) context;//获取当前上下文联系
 
     }
 

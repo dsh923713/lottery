@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,12 +23,14 @@ import com.lottery.utils.ToastUtils;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected Toolbar toolbar;
-    protected TextView tv_left,tv_title,tv_right;
+    protected TextView tv_left, tv_title, tv_right;
     protected BaseActivity context;
     private int resId;
-    public BaseActivity(int resId){
+
+    public BaseActivity(int resId) {
         this.resId = resId;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         tv_left = (TextView) findViewById(R.id.tv_toolbar_back);
         tv_title = (TextView) findViewById(R.id.tv_toolbar_title);
         tv_right = (TextView) findViewById(R.id.tv_toolbar_right);
-        if (toolbar != null){
+        if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
@@ -56,16 +61,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract void getBundleExtras(Bundle extras);
 
     protected abstract void initContentView(Bundle bundle);//恢复数据
+
     protected abstract void initView();//初始化控件
 
     /**
      * 改变状态栏颜色
+     *
      * @param colorId
      */
-    public void setStatusBar(int colorId){
-        if (colorId != Color.BLACK){
+    public void setStatusBar(int colorId) {
+        if (colorId != Color.BLACK) {
             StatusBarCompat.compat(this, colorId);
-        }else {
+        } else {
             StatusBarCompat.compat(this, Color.BLACK);
         }
     }
@@ -73,6 +80,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 设置标题栏返回键
+     *
      * @param resId
      * @param msg
      * @param listener
@@ -93,6 +101,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 设置标题
+     *
      * @param title
      */
     public void setTitle(String title) {
@@ -104,6 +113,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 设置标题栏右控件
+     *
      * @param resId
      * @param msg
      * @param listener
@@ -123,7 +133,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     *  Toast显示
+     * Toast显示
      */
     protected void showShortToast(String string) {
         ToastUtils.showShortToast(this, string);
@@ -205,5 +215,18 @@ public abstract class BaseActivity extends AppCompatActivity {
             intent.putExtras(bundle);
         }
         startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * 切换fragment页面
+     *
+     * @param fragment
+     */
+    public void replaceFragment(int resId, Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction beginTransaction = fragmentManager.beginTransaction();
+        beginTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        beginTransaction.replace(resId, fragment);
+        beginTransaction.commit();
     }
 }

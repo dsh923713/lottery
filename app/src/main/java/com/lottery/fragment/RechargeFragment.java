@@ -16,7 +16,7 @@ import com.lottery.base.BaseFragment;
 public class RechargeFragment extends BaseFragment {
     @Override
     protected View initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragm_recharge, container, false);
+        view = inflater.inflate(R.layout.fragment_recharge, container, false);
         return view;
     }
 

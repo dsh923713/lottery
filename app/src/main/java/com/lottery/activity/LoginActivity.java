@@ -42,13 +42,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     protected void getBundleExtras(Bundle extras) {
 
     }
-//    @OnClick(R.id.tv_login) void login(){
-//        startActivityAndFinish(HomeActivity.class);
-//    }
-//
-//    @OnClick(R.id.tv_register) void register(){
-//        startActivity(RegisterActivity.class);
-//    }
 
     @Override
     public void onClick(View v) {
