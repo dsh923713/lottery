@@ -205,6 +205,7 @@ public class DateUtil {
         String t = format.format(d);
         return t;
     }
+
     /**
      * 转换时间戳为00:00:00<br>
      *
@@ -219,14 +220,12 @@ public class DateUtil {
 
     /**
      * 获取时间差的字符串形式
-     * 如：1天1时1分1秒
+     * 如：1时1分1秒
      *
      * @param time 秒
      * @return
      */
     public static String getCutDown(long time) {
-
-
         int hours = ((int) time) % (3600 * 24) / 3600;
         int minutes = ((int) time) % (3600 * 24) % 3600 / 60;
         int seconds = ((int) time) % (3600 * 24) % 3600 % 60 % 60;
@@ -234,11 +233,11 @@ public class DateUtil {
         String str = "";
         //1天之内  只显示小时  1小时之内的 只显示分钟  1分钟之内 的只显示秒
         if (hours != 0) {
-            str = hours + ":" + minutes + ":";
+            str = hours + ":" + minutes + ":" + seconds;
         } else if (minutes != 0) {
-            str = minutes + ":";
+            str = "0:"+minutes + ":"+seconds;
         } else {
-            str = seconds + "s";
+            str = "0:"+"0:"+seconds;
         }
         return str;
     }

@@ -28,7 +28,7 @@ public class MsgChatAdapter extends BaseQuickAdapter<MsgBean, BaseViewHolder> {
                     .setVisible(R.id.right_layout_money, false)
                     .setVisible(R.id.tv_islead, false)
                     .setVisible(R.id.right_layout_msg, false)
-                    .setText(R.id.tv_left_money, "下注：" + item.getContent() + "元")
+                    .setText(R.id.tv_left_money, "下注：" + item.getContent())
                     .setImageResource(R.id.im_left_money, item.getIcon());
 //            Glide.with(mContext).load(item.getIcon()).into((ImageView) viewHolder.getView(R.id.im_left_money));
 
@@ -47,7 +47,7 @@ public class MsgChatAdapter extends BaseQuickAdapter<MsgBean, BaseViewHolder> {
                     .setVisible(R.id.right_layout_money, true)
                     .setVisible(R.id.tv_islead, false)
                     .setVisible(R.id.right_layout_msg, false)
-                    .setText(R.id.tv_right_money, "下注：" + item.getContent() + "元")
+                    .setText(R.id.tv_right_money, "下注：" + item.getContent())
                     .setImageResource(R.id.im_right_money, item.getIcon());
 //            Glide.with(mContext).load(item.getIcon()).into((ImageView) viewHolder.getView(R.id.im_left_money));
         } else if (item.getType() == MsgBean.TYPE_SENT && item.isMoney() == false) { //发送的抢庄信息

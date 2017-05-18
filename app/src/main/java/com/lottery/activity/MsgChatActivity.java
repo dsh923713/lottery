@@ -72,7 +72,12 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
     private CommonAdapter<String> recordAdapter;
 
     private boolean isShow;//是否显示投注记录
-    long time = 5 * 60 * 1000;
+    long time = 5 * 60; //抢庄时间5分钟
+
+    private boolean isClick1; //是否选择下注100
+    private boolean isClick2; //是否选择下注200
+    private boolean isClick3; //是否选择下注300
+    private boolean isClick5; //是否选择下注500
 
     private Timer timer = new Timer();
     private TimerTask task = new TimerTask() {
@@ -83,10 +88,15 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
                 public void run() {
                     time--;
                     tv_lead_time.setText(DateUtil.getCutDown(time));
+                    if (time == 0) { //抢庄时间截止 不能继续点击抢庄
+                        timer.cancel();
+                        tv_lead_up.setClickable(false);
+                    }
                 }
             });
         }
     };
+    private int size;
 
     public MsgChatActivity() {
         super(R.layout.activity_msg_chat);
@@ -166,11 +176,11 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
     private void addData() {
         MsgBean msgBean1 = new MsgBean(false, "测试数据试试看怎么样？", MsgBean.TYPE_RECEIVED, R.drawable.renma);
         data.add(msgBean1);
-        MsgBean msgBean2 = new MsgBean(true, "200", MsgBean.TYPE_RECEIVED, R.drawable.renma);
+        MsgBean msgBean2 = new MsgBean(true, "200元", MsgBean.TYPE_RECEIVED, R.drawable.renma);
         data.add(msgBean2);
         MsgBean msgBean3 = new MsgBean(false, "发表的数据试试看怎么样？", MsgBean.TYPE_SENT, R.drawable.xiaohei);
         data.add(msgBean3);
-        MsgBean msgBean4 = new MsgBean(true, "500", MsgBean.TYPE_SENT, R.drawable.xiaohei);
+        MsgBean msgBean4 = new MsgBean(true, "500元", MsgBean.TYPE_SENT, R.drawable.xiaohei);
         data.add(msgBean4);
         MsgBean msgBean5 = new MsgBean(false, "测试数据试试看怎么样？", MsgBean.TYPE_RECEIVED, R.drawable.renma);
         data.add(msgBean5);
@@ -201,14 +211,46 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
                 }
                 break;
             case R.id.tv_hundred_money: //100元
+                isClick1 = true;
+                isClick2 = false;
+                isClick3 = false;
+                isClick5 = false;
                 break;
             case R.id.tv_two_hundred_money: // 200元
+                isClick1 = false;
+                isClick2 = true;
+                isClick3 = false;
+                isClick5 = false;
                 break;
             case R.id.tv_three_hundred_money: //300元
+                isClick1 = false;
+                isClick2 = false;
+                isClick3 = true;
+                isClick5 = false;
                 break;
             case R.id.tv_five_hundred_money://500元
+                isClick1 = false;
+                isClick2 = false;
+                isClick3 = false;
+                isClick5 = true;
                 break;
             case R.id.tv_sure_bottom_pour://确认下注
+                MsgBean msgBean = new MsgBean(true, et_bottom_pour_money.getText().toString(),
+                        MsgBean.TYPE_SENT, R.drawable.xiaohei);
+                data.add(msgBean);
+                adapter.notifyItemInserted(data.size() - 1);//当有新消息，刷新recyclerview显示
+                rv_msg.scrollToPosition(data.size() - 1);//将recyclerview定位在最后一行
+                v_background.setVisibility(View.GONE);
+                ll_bottom_pour.setVisibility(View.GONE);
+                isClick1 = false;
+                isClick2 = false;
+                isClick3 = false;
+                isClick5 = false;
+                checkedHowMoney();
+
+                size = recordList.size() + 1;
+                recordList.add("玩家" + size);
+                recordAdapter.notifyItemInserted(recordList.size() - 1);
                 break;
             case R.id.tv_bottom_pour_record://投注记录
                 if (recordList.size() > 0) {
@@ -224,6 +266,7 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
                 }
                 break;
         }
+        checkedHowMoney();
     }
 
     //改变textview右侧图标
@@ -232,5 +275,52 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
         // 这一步必须要做,否则不会显示.
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
         tv_bottom_pour_record.setCompoundDrawables(null, null, drawable, null);//右侧显示
+    }
+
+    /**
+     * 判断选中的是哪个下注金额并显示在下方
+     */
+    private void checkedHowMoney() {
+        if (isClick1) {
+            tv_hundred_money.setBackgroundResource(R.drawable.pink_shape);
+            tv_two_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            tv_three_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            tv_five_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            et_bottom_pour_money.setText(tv_hundred_money.getText());
+        } else if (isClick2) {
+            tv_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            tv_two_hundred_money.setBackgroundResource(R.drawable.pink_shape);
+            tv_three_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            tv_five_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            et_bottom_pour_money.setText(tv_two_hundred_money.getText());
+        } else if (isClick3) {
+            tv_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            tv_two_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            tv_three_hundred_money.setBackgroundResource(R.drawable.pink_shape);
+            tv_five_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            et_bottom_pour_money.setText(tv_three_hundred_money.getText());
+        } else if (isClick5) {
+            tv_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            tv_two_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            tv_three_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            tv_five_hundred_money.setBackgroundResource(R.drawable.pink_shape);
+            et_bottom_pour_money.setText(tv_five_hundred_money.getText());
+        } else {
+            tv_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            tv_two_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            tv_three_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            tv_five_hundred_money.setBackgroundResource(R.drawable.grey_shape);
+            et_bottom_pour_money.setText("");
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (timer != null) { //界面销毁 取消定时器
+            timer.cancel();
+            task.cancel();
+        }
     }
 }
