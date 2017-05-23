@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="JPTabBar-1.2.3">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/601ad7f802349fd29f4ffa727077f881f975bf60/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/601ad7f802349fd29f4ffa727077f881f975bf60/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/6964ea628f53333a4514af482acec0e438b1a2fa/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/6964ea628f53333a4514af482acec0e438b1a2fa/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

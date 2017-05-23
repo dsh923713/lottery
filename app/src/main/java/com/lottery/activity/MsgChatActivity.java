@@ -238,7 +238,6 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
             case R.id.tv_sure_bottom_pour://确认下注
                 content = et_bottom_pour_money.getText().toString();
                 if (TextUtils.isEmpty(content)){showShortToast("请选择要下注的金额");return;}
-                if (!content.matches("[0-9]*")){return;} //不为数字返回
                 if (!content.contains("元")){
                     content += "元";
                 }
