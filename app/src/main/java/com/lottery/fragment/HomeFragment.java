@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +80,7 @@ public class HomeFragment extends BaseFragment implements RequestResult {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                bundle.clear();
                 switch (position) {
                     case 0: //北京28
                         bundle.putString("id_name", homeModels.get(position).getTitle());
@@ -171,7 +170,6 @@ public class HomeFragment extends BaseFragment implements RequestResult {
         if (requestCode.equals(RequestCode.GET_RED_ROOM)) {
             GsonUtil gsonUtil = new GsonUtil();
             List<RoomBean> roomBeanList = gsonUtil.jsonToList(result, RoomBean.class);
-            Log.d(TAG, "onSuccess: " + roomBeanList.get(0).getCname());
             bundle.putSerializable("roomBean", (Serializable) roomBeanList);
             startActivity(PlayRoomActivity.class, bundle);
         }

@@ -36,7 +36,7 @@ public class HttpUtils {
      */
     public void async(String url, String requestCode) {
         this.mRequestCode = requestCode;
-        OkHttpUtil.getDefault(context).doPostAsync(
+        OkHttpUtil.getDefault(context).doGetAsync(
                 HttpInfo.Builder().setUrl(url).build(),
                 new Callback() {
                     @Override

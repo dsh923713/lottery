@@ -137,4 +137,13 @@ public class PlayRoomActivity extends BaseActivity {
             imageView.setImageResource(data);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (roomBeanList != null){
+            roomBeanList.clear();
+            roomBeanList = null;
+        }
+    }
 }
