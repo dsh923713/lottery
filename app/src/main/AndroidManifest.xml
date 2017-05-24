@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lottery">
-    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="23" />
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="23" />
 
     <!-- Required -->
     <permission
@@ -43,25 +46,42 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Base.AppTheme">
-        <activity android:name=".activity.HomeActivity"></activity>
-        <activity android:name=".activity.LoginActivity">
+        <activity
+            android:name=".activity.LoginActivity"
+            android:theme="@style/NOTranslucent.AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RegisterActivity"></activity>
-        <activity android:name=".activity.PlayRoomActivity"></activity>
-        <activity android:name=".activity.BusinessRecordActivity"></activity>
-        <activity android:name=".activity.MsgChatActivity"></activity>
+        <!--注册-->
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:configChanges="orientation|keyboardHidden" />
+        <!--首页-->
+        <activity
+            android:name=".activity.HomeActivity"
+            android:configChanges="orientation|keyboardHidden" />
+        <!--游戏房间-->
+        <activity
+            android:name=".activity.PlayRoomActivity"
+            android:configChanges="orientation|keyboardHidden" />
+        <!--交易记录-->
+        <activity
+            android:name=".activity.BusinessRecordActivity"
+            android:configChanges="orientation|keyboardHidden" />
+        <!--聊天-->
+        <activity
+            android:name=".activity.MsgChatActivity"
+            android:configChanges="orientation|keyboardHidden" />
 
         <!-- Required SDK 核心功能-->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
         <service
             android:name="cn.jpush.android.service.PushService"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTER" />
                 <action android:name="cn.jpush.android.intent.REPORT" />
@@ -76,19 +96,19 @@
             android:name="cn.jpush.android.service.DaemonService"
             android:enabled="true"
             android:exported="true">
-            <intent-filter >
+            <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
-                <category android:name="com.lottery"/>
+                <category android:name="com.lottery" />
             </intent-filter>
         </service>
 
         <!-- Required SDK核心功能-->
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
-            android:enabled="true" >
+            android:enabled="true">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
-                <category android:name="com.lottery"/>
+                <category android:name="com.lottery" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -98,6 +118,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
@@ -106,10 +127,11 @@
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:exported="false" >
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="com.lottery" />
             </intent-filter>
@@ -130,8 +152,7 @@
         <service
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
-            android:exported="false" >
-        </service>
+            android:exported="false"></service>
 
         <!-- Required SDK核心功能-->
         <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
@@ -161,9 +182,13 @@
         <!-- 发到 Google Play 的APK可以设置为 google-play; -->
         <!-- 发到其他市场的 APK 可以设置为 xxx-market。 -->
         <!-- 渠道统计报表位于控制台页面的 “统计”-“用户统计”-“渠道分布” 中-->
-        <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default" />
         <!-- Required. AppKey copied from Portal -->
-        <meta-data android:name="JPUSH_APPKEY" android:value="58a5f0f75c96905df60136d1"/>
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="58a5f0f75c96905df60136d1" />
     </application>
 
 </manifest>

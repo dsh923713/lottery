@@ -1,13 +1,17 @@
 package com.lottery.activity;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +31,8 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.shaohui.bottomdialog.BaseBottomDialog;
+import me.shaohui.bottomdialog.BottomDialog;
 
 public class MsgChatActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "DSH -> MsgChatActivity";
@@ -48,6 +54,12 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
     RecyclerView rv_record; //下注玩家列表
     @BindView(R.id.tv_bottom_pour_record)
     TextView tv_bottom_pour_record;//下注记录
+    @BindView(R.id.ll_input)
+    LinearLayout ll_input;//底部输入栏
+    @BindView(R.id.ll_lead_up)
+    LinearLayout ll_lead_up; //下注与抢庄
+    @BindView(R.id.tv_send_msg)
+    TextView tv_send_msg; //发送
 
 
     @BindView(R.id.ll_bottom_pour)
@@ -97,7 +109,9 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
         }
     };
     private int size;
-    private String content;
+    private TextView tv_lead_up_money_sure; //抢庄确认
+    private EditText et_lead_up_money; //抢庄金额
+    private BaseBottomDialog dialog; //底部弹窗--抢庄金额输入
 
     public MsgChatActivity() {
         super(R.layout.activity_msg_chat);
@@ -161,12 +175,42 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
         tv_three_hundred_money.setOnClickListener(this);
         tv_five_hundred_money.setOnClickListener(this);
         tv_sure_bottom_pour.setOnClickListener(this);
+        tv_send_msg.setOnClickListener(this);
         v_background.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                ll_input.setVisibility(View.VISIBLE);
                 ll_bottom_pour.setVisibility(View.GONE);
                 v_background.setVisibility(View.GONE);
                 return false;
+            }
+        });
+        isSend();
+    }
+
+    /**
+     * 判断输入框是否有内容，有内容则显示发送按钮，反之则隐藏
+     */
+    private void isSend() {
+        et_msg.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    ll_lead_up.setVisibility(View.GONE);
+                    tv_send_msg.setVisibility(View.VISIBLE);
+                } else {
+                    ll_lead_up.setVisibility(View.VISIBLE);
+                    tv_send_msg.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
@@ -175,16 +219,18 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
      * 消息列表添加模拟数据
      */
     private void addData() {
-        MsgBean msgBean1 = new MsgBean(false, "测试数据试试看怎么样？", MsgBean.TYPE_RECEIVED, R.drawable.renma);
+        MsgBean msgBean1 = new MsgBean(false, false, "测试数据试试看怎么样？", MsgBean.TYPE_RECEIVED, R.drawable.renma);
         data.add(msgBean1);
-        MsgBean msgBean2 = new MsgBean(true, "200元", MsgBean.TYPE_RECEIVED, R.drawable.renma);
+        MsgBean msgBean2 = new MsgBean(true, false, "200元", MsgBean.TYPE_RECEIVED, R.drawable.renma);
         data.add(msgBean2);
-        MsgBean msgBean3 = new MsgBean(false, "发表的数据试试看怎么样？", MsgBean.TYPE_SENT, R.drawable.xiaohei);
+        MsgBean msgBean3 = new MsgBean(false, false, "发表的数据试试看怎么样？", MsgBean.TYPE_SENT, R.drawable.xiaohei);
         data.add(msgBean3);
-        MsgBean msgBean4 = new MsgBean(true, "500元", MsgBean.TYPE_SENT, R.drawable.xiaohei);
+        MsgBean msgBean4 = new MsgBean(true, false, "500元", MsgBean.TYPE_SENT, R.drawable.xiaohei);
         data.add(msgBean4);
-        MsgBean msgBean5 = new MsgBean(false, "测试数据试试看怎么样？", MsgBean.TYPE_RECEIVED, R.drawable.renma);
+        MsgBean msgBean5 = new MsgBean(false, false, "测试数据试试看怎么样？", MsgBean.TYPE_RECEIVED, R.drawable.renma);
         data.add(msgBean5);
+        MsgBean msgBean6 = new MsgBean(false, true, "500", MsgBean.TYPE_RECEIVED, R.drawable.renma);
+        data.add(msgBean6);
     }
 
     //投注记录添加模拟数据
@@ -196,15 +242,28 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+        if (v.getId() != R.id.tv_send_msg)
+            hideSoftInput(v);//隐藏软键盘
         switch (v.getId()) {
             case R.id.tv_bottom_pour: //下注
+                ll_input.setVisibility(View.GONE);
                 ll_bottom_pour.setVisibility(View.VISIBLE);
                 v_background.setVisibility(View.VISIBLE);
                 break;
             case R.id.tv_lead_up:  //抢庄
+                dialog = BottomDialog.create(getSupportFragmentManager()).setLayoutRes(R.layout.dia_lead_up).setViewListener(new BottomDialog.ViewListener() {
+                    @Override
+                    public void bindView(View v) {
+                        et_lead_up_money = (EditText) v.findViewById(R.id.et_lead_up_money);
+                        tv_lead_up_money_sure = (TextView) v.findViewById(R.id.tv_lead_up_money_sure);
+                        tv_lead_up_money_sure.setOnClickListener(clickListener);
+                    }
+                }).show();
+                break;
+            case R.id.tv_send_msg:  //发送
                 String content = et_msg.getText().toString().trim();
                 if (!TextUtils.isEmpty(content)) {
-                    MsgBean msgBean = new MsgBean(false, content, MsgBean.TYPE_SENT, R.drawable.xiaohei);
+                    MsgBean msgBean = new MsgBean(false, false, content, MsgBean.TYPE_SENT, R.drawable.xiaohei);
                     data.add(msgBean);
                     adapter.notifyItemInserted(data.size() - 1);//当有新消息，刷新recyclerview显示
                     rv_msg.scrollToPosition(data.size() - 1);//将recyclerview定位在最后一行
@@ -237,16 +296,20 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.tv_sure_bottom_pour://确认下注
                 content = et_bottom_pour_money.getText().toString();
-                if (TextUtils.isEmpty(content)){showShortToast("请选择要下注的金额");return;}
-                if (!content.contains("元")){
+                if (TextUtils.isEmpty(content)) {
+                    showShortToast("请选择要下注的金额");
+                    return;
+                }
+                if (!content.contains("元")) {
                     content += "元";
                 }
-                MsgBean msgBean = new MsgBean(true, content,MsgBean.TYPE_SENT, R.drawable.xiaohei);
+                MsgBean msgBean = new MsgBean(true, false, content, MsgBean.TYPE_SENT, R.drawable.xiaohei);
                 data.add(msgBean);
                 adapter.notifyItemInserted(data.size() - 1);//当有新消息，刷新recyclerview显示
                 rv_msg.scrollToPosition(data.size() - 1);//将recyclerview定位在最后一行
                 v_background.setVisibility(View.GONE);
                 ll_bottom_pour.setVisibility(View.GONE);
+                ll_input.setVisibility(View.VISIBLE);
                 isClick1 = false;
                 isClick2 = false;
                 isClick3 = false;
@@ -327,5 +390,42 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
             timer.cancel();
             task.cancel();
         }
+    }
+
+    /**
+     * 抢庄事件监听
+     */
+    View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            hideSoftInput(v);//隐藏软键盘
+            String money = et_lead_up_money.getText().toString().trim();
+            if (TextUtils.isEmpty(money)) {
+                showShortToast("请输入抢庄金额！");
+                return;
+            }
+//            if (!money.matches("[0-9]*")){
+//                showShortToast("请输入正确的格式");
+//                return;
+//            }
+            MsgBean msgBean = new MsgBean(true, true, money, MsgBean.TYPE_SENT, R.drawable.xiaohei);
+            data.add(msgBean);
+            adapter.notifyItemInserted(data.size() - 1);//当有新消息，刷新recyclerview显示
+            rv_msg.scrollToPosition(data.size() - 1);//将recyclerview定位在最后一行
+            et_msg.setText("");//清空输入框数据
+            dialog.dismiss();
+        }
+    };
+
+    /**
+     * 隐藏软键盘
+     */
+    private void hideSoftInput(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        // 获取软键盘的显示状态
+        boolean isOpen = imm.isActive();
+        if (isOpen)
+            // 强制隐藏软键盘
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

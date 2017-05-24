@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="bottomdialog-1.1.9">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/46e7c86116494796b974edb9cc85bcba84dac12c/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/46e7c86116494796b974edb9cc85bcba84dac12c/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/me.shaohui/bottomdialog/1.1.9/9be370f61ee7288490139da8a97503e6508110ef/bottomdialog-1.1.9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

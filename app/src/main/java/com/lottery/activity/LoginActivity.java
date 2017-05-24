@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.lottery.R;
 import com.lottery.base.BaseActivity;
+import com.lottery.utils.ClickUtil;
 import com.lottery.utils.ExampleUtil;
 
 import java.util.Set;
@@ -57,7 +58,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_login:
-                setAlias();
+//                setAlias();
                 startActivityAndFinish(HomeActivity.class);
                 break;
             case R.id.tv_register:
@@ -66,15 +67,30 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    /**
+     * 判断用户名与密码是否正常并将用户名设置为JPush别名
+     */
     private void setAlias() {
-        String alias = et_name.getText().toString().trim();
+        String alias = et_name.getText().toString().trim(); //用户名（设置JPush别名）
+        String pwd = et_password.getText().toString().trim();//密码
         if (TextUtils.isEmpty(alias)) {
-            Toast.makeText(LoginActivity.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+            showShortToast("用户名不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(pwd)) {
+            showShortToast("密码不能为空");
             return;
         }
         if (!ExampleUtil.isValidTagAndAlias(alias)) {
-            Toast.makeText(LoginActivity.this, "别名不可用", Toast.LENGTH_SHORT).show();
+            showShortToast("别名不可用");
             return;
+        }
+        if (!alias.equals("admin") || !pwd.equals("123456")){
+            showShortToast("用户名或密码不正确！");
+            return;
+        }
+        if (alias.equals("admin") && pwd.equals("123456")){
+            startActivityAndFinish(HomeActivity.class);
         }
 
         // 调用 Handler 来异步设置别名

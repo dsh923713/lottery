@@ -11,12 +11,18 @@ public class MsgBean {
     private String content;
     private int type;
     private int icon;
+    private boolean isLeadUp;
 
-    public MsgBean(boolean isMoney, String content, int type, int icon) {
+    public MsgBean(boolean isMoney, boolean isLeadUp, String content, int type, int icon) {
         this.isMoney = isMoney;
         this.content = content;
         this.type = type;
         this.icon = icon;
+        this.isLeadUp = isLeadUp;
+    }
+
+    public boolean isLeadUp() {
+        return isLeadUp;
     }
 
     public boolean isMoney() {

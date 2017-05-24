@@ -20,9 +20,11 @@ import cn.jpush.android.api.JPushInterface;
  */
 
 public class MyApplication extends Application {
+    private static MyApplication application;
     @Override
     public void onCreate() {
         super.onCreate();
+        application = this;
         //开启jpush跟日志
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
@@ -51,5 +53,13 @@ public class MyApplication extends Application {
                 .addExceptionInterceptor(HttpInterceptor.ExceptionInterceptor)//请求链路异常拦截器
                 .setCookieJar(new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(this)))//持久化cookie
                 .build();
+    }
+
+    /**
+     * 获取单例application
+     * @return
+     */
+    public static MyApplication getInstance(){
+        return application;
     }
 }

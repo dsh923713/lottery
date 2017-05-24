@@ -7,6 +7,7 @@ import android.util.Log;
  */
 
 public class ClickUtil {
+    private static final String TAG = "DSH -> ClickUtil";
     private static long lastClickTime = 0;
     private static long DIFF = 500;
     private static int lastButtonId = -1;

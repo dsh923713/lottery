@@ -11,6 +11,7 @@ import com.lottery.utils.ToastUtils;
 import cn.jpush.android.api.JPushInterface;
 
 /**
+ * 自定义的JPush广播接收器
  * Created by Administrator on 2017/5/23.
  */
 

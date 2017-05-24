@@ -88,11 +88,12 @@
                 android:id="@+id/v_background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                android:background="@color/translucent"/>
+                android:background="@color/translucent"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/ll_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -102,13 +103,14 @@
             <EditText
                 android:id="@+id/et_msg"
                 android:layout_width="0dp"
-                android:paddingLeft="3dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/white_shape" />
+                android:background="@drawable/white_shape"
+                android:paddingLeft="3dp" />
 
             <LinearLayout
+                android:id="@+id/ll_lead_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -141,6 +143,20 @@
                     android:textColor="@color/white"
                     android:textSize="14sp" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_send_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/t29d454"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:text="@string/send_msg"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 
@@ -165,8 +181,9 @@
             android:textSize="20sp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="110dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginBottom="30dp"
             android:gravity="center"
             android:padding="5dp">
