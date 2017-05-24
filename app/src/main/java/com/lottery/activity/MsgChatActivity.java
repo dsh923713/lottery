@@ -229,7 +229,7 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
         data.add(msgBean4);
         MsgBean msgBean5 = new MsgBean(false, false, "测试数据试试看怎么样？", MsgBean.TYPE_RECEIVED, R.drawable.renma);
         data.add(msgBean5);
-        MsgBean msgBean6 = new MsgBean(false, true, "500", MsgBean.TYPE_RECEIVED, R.drawable.renma);
+        MsgBean msgBean6 = new MsgBean(true, true, "500", MsgBean.TYPE_RECEIVED, R.drawable.renma);
         data.add(msgBean6);
     }
 

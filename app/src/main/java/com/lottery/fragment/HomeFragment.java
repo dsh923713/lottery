@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,14 @@ import com.lottery.R;
 import com.lottery.activity.PlayRoomActivity;
 import com.lottery.adapter.HomeAdapter;
 import com.lottery.base.BaseFragment;
+import com.lottery.base.RequestResult;
 import com.lottery.bean.HomeBean;
+import com.lottery.bean.RoomBean;
+import com.lottery.finals.RequestCode;
+import com.lottery.utils.GsonUtil;
+import com.lottery.utils.HttpUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +38,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/5/15 0015.
  */
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements RequestResult {
     private static final String TAG = "DSH -> HomeFragment";
     @BindView(R.id.rlv_home)
     RecyclerView rlv_home; //加载首页数据--红包牛牛等
@@ -41,6 +48,8 @@ public class HomeFragment extends BaseFragment {
     private List<Integer> imageList;//图标集合
     private List<HomeBean> homeModels = new ArrayList<>(); //集合数据
     private Bundle bundle;//传递参数
+    private HttpUtils httpUtils;
+    private String url;
 
     @Override
     protected View initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
@@ -72,6 +81,7 @@ public class HomeFragment extends BaseFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
                 switch (position) {
                     case 0: //北京28
                         bundle.putString("id_name", homeModels.get(position).getTitle());
@@ -82,8 +92,11 @@ public class HomeFragment extends BaseFragment {
                         startActivity(PlayRoomActivity.class, bundle);
                         break;
                     case 2: // 红包牛牛
+                        httpUtils = new HttpUtils(getActivity(), HomeFragment.this,"正在加载...",true);
+                        url = "http://lottery.blmshop.com/?m=sys&act=getroom&id_kind=1";
+                        httpUtils.async(url, RequestCode.GET_RED_ROOM);
                         bundle.putString("id_name", homeModels.get(position).getTitle());
-                        startActivity(PlayRoomActivity.class, bundle);
+
                         break;
                     case 3: //重庆时时彩
                         bundle.putString("id_name", homeModels.get(position).getTitle());
@@ -109,8 +122,6 @@ public class HomeFragment extends BaseFragment {
                         break;
 
                 }
-                showShortToast("onItemClick" + position);
-//                Toast.makeText(activity, "onItemClick" + position, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -154,6 +165,23 @@ public class HomeFragment extends BaseFragment {
         imageList.add(R.mipmap.im3);
         imageList.add(R.mipmap.im4);
     }
+
+    @Override
+    public void onSuccess(String result, String requestCode) {
+        if (requestCode.equals(RequestCode.GET_RED_ROOM)) {
+            GsonUtil gsonUtil = new GsonUtil();
+            List<RoomBean> roomBeanList = gsonUtil.jsonToList(result, RoomBean.class);
+            Log.d(TAG, "onSuccess: " + roomBeanList.get(0).getCname());
+            bundle.putSerializable("roomBean", (Serializable) roomBeanList);
+            startActivity(PlayRoomActivity.class, bundle);
+        }
+    }
+
+    @Override
+    public void onFailure(String result, String requestCode) {
+        showShortToast(result);
+    }
+
 
     /**
      * 加载轮播图片

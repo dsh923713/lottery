@@ -15,6 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lottery.R;
 import com.lottery.adapter.PlayRoomAdapter;
 import com.lottery.base.BaseActivity;
+import com.lottery.bean.RoomBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class PlayRoomActivity extends BaseActivity {
     private List<Integer> imageList;//头部轮播图片集合
     private List<String> data = new ArrayList<>(); //数据集合
     private String name; //标题名称
+    private List<RoomBean> roomBeanList;//房间数据
 
     public PlayRoomActivity() {
         super(R.layout.activity_redpacketox);
@@ -46,6 +48,10 @@ public class PlayRoomActivity extends BaseActivity {
     protected void getBundleExtras(Bundle extras) {
         if (extras != null) {
             name = extras.getString("id_name");
+            if (extras.getSerializable("roomBean") == null) {
+                return;
+            }
+            roomBeanList = (List<RoomBean>) extras.getSerializable("roomBean");
         }
     }
 
@@ -58,7 +64,7 @@ public class PlayRoomActivity extends BaseActivity {
     protected void initView() {
         ButterKnife.bind(this); //绑定注解
         setTitle(name);//设置标题
-        toolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorAccent));//改变toolbar颜色
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));//改变toolbar颜色
         setStatusBar(ContextCompat.getColor(this, R.color.colorAccent));//改变状态栏颜色
         setLeftIcon(R.mipmap.ic_back, "", new View.OnClickListener() { //添加返回按钮
             @Override
@@ -77,8 +83,8 @@ public class PlayRoomActivity extends BaseActivity {
                 //设置指示器显示的位置区域--居中
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
 
-        addData();
-        PlayRoomAdapter adapter = new PlayRoomAdapter(data);
+//        addData();
+        PlayRoomAdapter adapter = new PlayRoomAdapter(roomBeanList);
         GridLayoutManager layout = new GridLayoutManager(this, 2);
         rlv_redpacket.setLayoutManager(layout);
         rlv_redpacket.setAdapter(adapter);
