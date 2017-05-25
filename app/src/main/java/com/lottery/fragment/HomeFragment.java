@@ -91,11 +91,8 @@ public class HomeFragment extends BaseFragment implements RequestResult {
                         startActivity(PlayRoomActivity.class, bundle);
                         break;
                     case 2: // 红包牛牛
-                        httpUtils = new HttpUtils(getActivity(), HomeFragment.this,"正在加载...",true);
-                        url = "http://lottery.blmshop.com/?m=sys&act=getroom&id_kind=1";
-                        httpUtils.async(url, RequestCode.GET_RED_ROOM);
                         bundle.putString("id_name", homeModels.get(position).getTitle());
-
+                        startActivity(PlayRoomActivity.class, bundle);
                         break;
                     case 3: //重庆时时彩
                         bundle.putString("id_name", homeModels.get(position).getTitle());
@@ -167,12 +164,7 @@ public class HomeFragment extends BaseFragment implements RequestResult {
 
     @Override
     public void onSuccess(String result, String requestCode) {
-        if (requestCode.equals(RequestCode.GET_RED_ROOM)) {
-            GsonUtil gsonUtil = new GsonUtil();
-            List<RoomBean> roomBeanList = gsonUtil.jsonToList(result, RoomBean.class);
-            bundle.putSerializable("roomBean", (Serializable) roomBeanList);
-            startActivity(PlayRoomActivity.class, bundle);
-        }
+
     }
 
     @Override

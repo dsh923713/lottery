@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,7 +16,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lottery.R;
 import com.lottery.adapter.PlayRoomAdapter;
 import com.lottery.base.BaseActivity;
+import com.lottery.base.RequestResult;
 import com.lottery.bean.RoomBean;
+import com.lottery.finals.RequestCode;
+import com.lottery.fragment.HomeFragment;
+import com.lottery.utils.GsonUtil;
+import com.lottery.utils.HttpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +33,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/5/16.
  */
 
-public class PlayRoomActivity extends BaseActivity {
+public class PlayRoomActivity extends BaseActivity implements RequestResult {
     private static final String TAG = "DSH -> PlayRoomActivity";
     @BindView(R.id.cb_redpacket_top)
     ConvenientBanner cb_redpacket_top; //头部轮播图
@@ -37,7 +43,11 @@ public class PlayRoomActivity extends BaseActivity {
     private List<Integer> imageList;//头部轮播图片集合
     private List<String> data = new ArrayList<>(); //数据集合
     private String name; //标题名称
-    private List<RoomBean> roomBeanList;//房间数据
+    private List<RoomBean> roomBeanList = new ArrayList<>();//房间数据
+    private Bundle bundle;
+    private HttpUtils httpUtils; //网络请求类
+    private String url; //地址
+    private PlayRoomAdapter adapter; //适配器
 
     public PlayRoomActivity() {
         super(R.layout.activity_redpacketox);
@@ -48,10 +58,6 @@ public class PlayRoomActivity extends BaseActivity {
     protected void getBundleExtras(Bundle extras) {
         if (extras != null) {
             name = extras.getString("id_name");
-            if (extras.getSerializable("roomBean") == null) {
-                return;
-            }
-            roomBeanList = (List<RoomBean>) extras.getSerializable("roomBean");
         }
     }
 
@@ -62,6 +68,7 @@ public class PlayRoomActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        bundle = new Bundle();
         ButterKnife.bind(this); //绑定注解
         setTitle(name);//设置标题
         toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));//改变toolbar颜色
@@ -82,21 +89,44 @@ public class PlayRoomActivity extends BaseActivity {
                 imageList).setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused})
                 //设置指示器显示的位置区域--居中
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
-
+        showRoom();
 //        addData();
-        PlayRoomAdapter adapter = new PlayRoomAdapter(roomBeanList);
+        adapter = new PlayRoomAdapter(roomBeanList);
         GridLayoutManager layout = new GridLayoutManager(this, 2);
         rlv_redpacket.setLayoutManager(layout);
         rlv_redpacket.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                showShortToast("onItemClick" + name + position);
-                startActivity(MsgChatActivity.class);
+                bundle.clear();
+                switch (position) {
+                    case 0:
+                        bundle.putInt("id", roomBeanList.get(position).getId());
+                        bundle.putString("cname", roomBeanList.get(position).getCname());
+                        break;
+                }
+                startActivity(MsgChatActivity.class, bundle);
             }
         });
     }
 
+    /**
+     * 联网获取房间列表数据
+     */
+    private void showRoom() {
+        switch (name) {
+            case "北京28"://模拟
+                httpUtils = new HttpUtils(PlayRoomActivity.this, PlayRoomActivity.this, "正在加载...", true);
+                url = "http://lottery.blmshop.com/?m=sys&act=getroom&id_kind=1";
+                httpUtils.async(url, RequestCode.GET_BEIJING_ROOM);
+                break;
+            case "红包牛牛":
+                httpUtils = new HttpUtils(PlayRoomActivity.this, PlayRoomActivity.this, "正在加载...", true);
+                url = "http://lottery.blmshop.com/?m=sys&act=getroom&id_kind=1";
+                httpUtils.async(url, RequestCode.GET_RED_ROOM);
+                break;
+        }
+    }
 
     /**
      * 往集合添加数据，用于recyclerview
@@ -117,6 +147,29 @@ public class PlayRoomActivity extends BaseActivity {
         imageList.add(R.mipmap.im2);
         imageList.add(R.mipmap.im3);
         imageList.add(R.mipmap.im4);
+    }
+
+    /**
+     * 联网结果
+     * @param result
+     * @param requestCode
+     */
+    @Override
+    public void onSuccess(String result, String requestCode) {
+        roomBeanList.clear();
+        if (requestCode.equals(RequestCode.GET_RED_ROOM)) {
+            roomBeanList.addAll(GsonUtil.jsonToList(result, RoomBean.class));
+            adapter.notifyDataSetChanged();
+        } else if (requestCode.equals(RequestCode.GET_BEIJING_ROOM)) {
+            for (int i = 0; i < 3; i++)
+                roomBeanList.addAll(GsonUtil.jsonToList(result, RoomBean.class));
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onFailure(String result, String requestCode) {
+        showShortToast(result);
     }
 
     /**
@@ -141,7 +194,7 @@ public class PlayRoomActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (roomBeanList != null){
+        if (roomBeanList != null) {
             roomBeanList.clear();
             roomBeanList = null;
         }

@@ -21,6 +21,7 @@ import com.lottery.adapter.MsgChatAdapter;
 import com.lottery.base.BaseActivity;
 import com.lottery.bean.MsgBean;
 import com.lottery.utils.DateUtil;
+import com.lottery.utils.LogUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -112,6 +113,8 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
     private TextView tv_lead_up_money_sure; //抢庄确认
     private EditText et_lead_up_money; //抢庄金额
     private BaseBottomDialog dialog; //底部弹窗--抢庄金额输入
+    private int id; //房间id
+    private String cname;//房间名称
 
     public MsgChatActivity() {
         super(R.layout.activity_msg_chat);
@@ -119,7 +122,11 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void getBundleExtras(Bundle extras) {
-
+        if (extras != null) {
+            id = extras.getInt("id");
+            cname = extras.getString("cname");
+            LogUtils.d(id + "--" + cname);
+        }
     }
 
     @Override
