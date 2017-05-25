@@ -235,9 +235,27 @@ public class DateUtil {
         if (hours != 0) {
             str = hours + ":" + minutes + ":" + seconds;
         } else if (minutes != 0) {
-            str = "0:"+minutes + ":"+seconds;
+            str = "0:" + minutes + ":" + seconds;
         } else {
-            str = "0:"+"0:"+seconds;
+            str = "0:" + "0:" + seconds;
+        }
+        return str;
+    }
+
+    /**
+     * 获取时间差的字符串形式
+     * 如：1秒
+     *
+     * @param time 秒
+     * @return
+     */
+    public static String getTimeDown(long time) {
+        int seconds = ((int) time) % (3600 * 24) % 3600 % 60 % 60;
+
+        String str = "";
+        //1分钟之内 的只显示秒
+        if (seconds != 0) {
+            str = "" + seconds;
         }
         return str;
     }

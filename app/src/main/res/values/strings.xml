@@ -42,7 +42,10 @@
 
     <string name="all">全部</string>
     <string name="bottom_pour">下注</string>
-    
+    <string name="bunko">输赢</string>
+    <string name="withdraw_cash">提现</string>
+    <string name="poundage">手续费</string>
+
     <string name="lead_up">抢庄</string>
     <string name="leading_up">抢庄中</string>
     <string name="lead_up_time">现在是抢庄时间</string>

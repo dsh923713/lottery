@@ -9,6 +9,7 @@ import com.okhttplib.OkHttpUtil;
 import com.okhttplib.callback.Callback;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/5/24.
@@ -17,8 +18,9 @@ import java.io.IOException;
 public class HttpUtils {
     private Context context;
     private RequestResult requestResult;
-    private String mRequestCode;
+    private static String mRequestCode;
     private ProgressDialog dialog;
+    private static final String url = "http://lottery.blmshop.com";
 
     public HttpUtils(Context context, RequestResult requestResult, String msg, boolean isShow) {
         this.dialog = DialogUtil.getProgressDialog(context, msg);
@@ -34,97 +36,36 @@ public class HttpUtils {
     /**
      * 异步请求：回调方法可以直接操作UI
      */
-    public void async(String url, String requestCode) {
+    public void async(String requestCode, Map<String,String> data) {
         this.mRequestCode = requestCode;
+        LogUtils.d(""+mRequestCode);
         OkHttpUtil.getDefault(context).doGetAsync(
-                HttpInfo.Builder().setUrl(url).build(),
+                HttpInfo.Builder().setUrl(url).addParams(data).build(),
                 new Callback() {
                     @Override
                     public void onFailure(HttpInfo info) throws IOException {
                         String result = info.getRetDetail();
+                        if (dialog != null){
+                            dialog.dismiss();
+                        }
                         if (requestResult != null) {
                             requestResult.onFailure(result, mRequestCode);
-                            if (dialog != null){
-                                dialog.dismiss();
-                            }
                         }
                     }
 
                     @Override
                     public void onSuccess(HttpInfo info) throws IOException {
                         String result = info.getRetDetail();
+                        if (dialog != null){
+                            dialog.dismiss();
+                        }
                         if (requestResult != null) {
                             requestResult.onSuccess(result, mRequestCode);
-                            if (dialog != null){
-                                dialog.dismiss();
-                            }
                         }
                     }
                 });
     }
 
-//    /**
-//     * 先缓存再网络：先请求缓存，失败则请求网络
-//     */
-//    public void cacheThenNetwork() {
-//        OkHttpUtil.Builder().setCacheType(CacheType.CACHE_THEN_NETWORK).build(context)
-//                .doGetAsync(
-//                        HttpInfo.Builder().setUrl("").build(),
-//                        new Callback() {
-//                            @Override
-//                            public void onSuccess(HttpInfo info) throws IOException {
-//                                String result = info.getRetDetail();
-//                                if (requestResult != null) {
-//                                    requestResult.onSuccess(result);
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(HttpInfo info) throws IOException {
-//                                String result = info.getRetDetail();
-//                                if (requestResult != null) {
-//                                    requestResult.onFailure(result);
-//                                }
-//                            }
-//                        }
-//                );
-//    }
-//
-//    /**
-//     * 缓存10秒失效：连续点击进行测试10秒内再次请求为缓存响应，10秒后再请求则缓存失效并进行网络请求
-//     */
-//    public void tenSecondCache(boolean isNeedDeleteCache) {
-//        //由于采用同一个url测试，需要先清理缓存
-//        if (isNeedDeleteCache) {
-//            isNeedDeleteCache = false;
-//            OkHttpUtil.getDefault().deleteCache();
-//        }
-//        OkHttpUtil.Builder()
-//                .setCacheType(CacheType.CACHE_THEN_NETWORK)
-//                .setCacheSurvivalTime(10)//缓存存活时间为10秒
-//                .build(this)
-//                .doGetAsync(
-//                        HttpInfo.Builder().setUrl("").build(),
-//                        new Callback() {
-//                            @Override
-//                            public void onSuccess(HttpInfo info) throws IOException {
-//                                String result = info.getRetDetail();
-//                                if (requestResult != null) {
-//                                    requestResult.onSuccess(result);
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(HttpInfo info) throws IOException {
-//                                String result = info.getRetDetail();
-//                                if (requestResult != null) {
-//                                    requestResult.onFailure(result);
-//                                }
-//                            }
-//                        }
-//                );
-//    }
-//
 //    /**
 //     * 异步上传图片：显示上传进度
 //     */

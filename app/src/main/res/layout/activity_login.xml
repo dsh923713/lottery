@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-   <include layout="@layout/toolbar_title"/>
+    <include layout="@layout/toolbar_title" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,14 +16,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:text="@string/your_name"/>
+            android:text="@string/your_name"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/et_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/your_name_hint"/>
+            android:hint="@string/your_name_hint"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -36,15 +40,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:text="@string/your_password"/>
+            android:text="@string/your_password"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/et_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:hint="@string/your_password_hint"
             android:inputType="textPassword"
-            android:hint="@string/your_password_hint"/>
+            android:textColor="@color/black"
+            android:textSize="15sp" />
     </LinearLayout>
 
     <TextView
@@ -57,7 +65,7 @@
         android:padding="8dp"
         android:text="@string/login_up"
         android:textColor="@color/white"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/tv_register"
@@ -70,5 +78,5 @@
         android:padding="8dp"
         android:text="@string/register_user"
         android:textColor="@color/white"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 </LinearLayout>

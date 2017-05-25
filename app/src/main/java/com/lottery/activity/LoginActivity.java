@@ -11,9 +11,17 @@ import android.widget.Toast;
 
 import com.lottery.R;
 import com.lottery.base.BaseActivity;
+import com.lottery.base.RequestResult;
+import com.lottery.bean.LoginBean;
+import com.lottery.finals.RequestCode;
 import com.lottery.utils.ClickUtil;
 import com.lottery.utils.ExampleUtil;
+import com.lottery.utils.GsonUtil;
+import com.lottery.utils.HttpUtils;
+import com.lottery.utils.SPUtil;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import butterknife.BindView;
@@ -21,16 +29,20 @@ import butterknife.ButterKnife;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener, RequestResult {
     private static final String TAG = "DSH -> LoginActivity";
     @BindView(R.id.et_name)
-    EditText et_name;
+    EditText et_name; //用户名
     @BindView(R.id.et_password)
-    EditText et_password;
+    EditText et_password; //密码
     @BindView(R.id.tv_login)
-    TextView tv_login;
+    TextView tv_login; //登陆
     @BindView(R.id.tv_register)
-    TextView tv_register;
+    TextView tv_register; //注册
+    private HttpUtils httpUtils; //联网请求类
+    private Map<String, String> data = new HashMap<>();//参数集合
+    private String alias; //用户名（JPush别名）
+    private String pwd; //密码
 
     public LoginActivity() {
         super(R.layout.activity_login);
@@ -47,6 +59,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         ButterKnife.bind(this);
         tv_login.setOnClickListener(this);
         tv_register.setOnClickListener(this);
+        if (!TextUtils.isEmpty(SPUtil.getString("alias")) && !TextUtils.isEmpty(SPUtil.getString("pwd"))) {
+            et_name.setText(SPUtil.getString("alias"));
+            et_password.setText(SPUtil.getString("pwd"));
+        }
     }
 
     @Override
@@ -58,8 +74,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_login:
-//                setAlias();
-                startActivityAndFinish(HomeActivity.class);
+                setAlias();
                 break;
             case R.id.tv_register:
                 startActivity(RegisterActivity.class);
@@ -71,8 +86,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      * 判断用户名与密码是否正常并将用户名设置为JPush别名
      */
     private void setAlias() {
-        String alias = et_name.getText().toString().trim(); //用户名（设置JPush别名）
-        String pwd = et_password.getText().toString().trim();//密码
+        //用户名（设置JPush别名）
+        alias = et_name.getText().toString().trim();
+        //密码
+        pwd = et_password.getText().toString().trim();
         if (TextUtils.isEmpty(alias)) {
             showShortToast("用户名不能为空");
             return;
@@ -85,14 +102,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             showShortToast("别名不可用");
             return;
         }
-        if (!alias.equals("admin") || !pwd.equals("123456")){
-            showShortToast("用户名或密码不正确！");
-            return;
-        }
-        if (alias.equals("admin") && pwd.equals("123456")){
-            startActivityAndFinish(HomeActivity.class);
-        }
-
+        data.clear();
+        data.put("m","sys");
+        data.put("act", "login");
+        data.put("code", alias);
+        data.put("password", pwd);
+        httpUtils = new HttpUtils(LoginActivity.this, LoginActivity.this, "正在登陆", true);
+        httpUtils.async(RequestCode.LOGIN_ACCOUNT, data);
         // 调用 Handler 来异步设置别名
         mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_ALIAS, alias));
     }
@@ -105,6 +121,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 case 0:
                     logs = "Set tag and alias success";
                     Log.i(TAG, logs);
+                    SPUtil.saveboolean("isSuccess" + alias, true);
                     // 建议这里往 SharePreference 里写一个成功设置的状态。成功设置一次后，以后不必再次设置了。
                     break;
                 case 6002:
@@ -117,7 +134,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     logs = "Failed with errorCode = " + code;
                     Log.e(TAG, logs);
             }
-            ExampleUtil.showToast(logs, getApplicationContext());
+//            ExampleUtil.showToast(logs, getApplicationContext());
         }
     };
     private static final int MSG_SET_ALIAS = 1001;
@@ -127,16 +144,33 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             super.handleMessage(msg);
             switch (msg.what) {
                 case MSG_SET_ALIAS:
-                    Log.d(TAG, "Set alias in handler.");
                     // 调用 JPush 接口来设置别名。
-                    JPushInterface.setAliasAndTags(getApplicationContext(),
-                            (String) msg.obj,
-                            null,
-                            mAliasCallback);
+                    if (!SPUtil.getBoolean("isSuccess" + alias)) {
+                        Log.d(TAG, "Set alias in handler.");
+                        JPushInterface.setAliasAndTags(getApplicationContext(),
+                                (String) msg.obj, null, mAliasCallback);
+                    }
+
                     break;
                 default:
                     Log.i(TAG, "Unhandled msg - " + msg.what);
             }
         }
     };
+
+    @Override
+    public void onSuccess(String result, String requestCode) {
+        LoginBean bean = GsonUtil.GsonToBean(result, LoginBean.class);
+        if (bean.getCode() == 0) {
+            SPUtil.saveString("alias", alias);
+            SPUtil.saveString("pwd", pwd);
+            startActivityAndFinish(HomeActivity.class);
+        }
+        showShortToast(bean.getMessage());
+    }
+
+    @Override
+    public void onFailure(String result, String requestCode) {
+
+    }
 }

@@ -24,7 +24,9 @@ import com.lottery.utils.GsonUtil;
 import com.lottery.utils.HttpUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +48,6 @@ public class PlayRoomActivity extends BaseActivity implements RequestResult {
     private List<RoomBean> roomBeanList = new ArrayList<>();//房间数据
     private Bundle bundle;
     private HttpUtils httpUtils; //网络请求类
-    private String url; //地址
     private PlayRoomAdapter adapter; //适配器
 
     public PlayRoomActivity() {
@@ -114,16 +115,23 @@ public class PlayRoomActivity extends BaseActivity implements RequestResult {
      * 联网获取房间列表数据
      */
     private void showRoom() {
+        Map<String, String> data = new HashMap<>();
         switch (name) {
             case "北京28"://模拟
                 httpUtils = new HttpUtils(PlayRoomActivity.this, PlayRoomActivity.this, "正在加载...", true);
-                url = "http://lottery.blmshop.com/?m=sys&act=getroom&id_kind=1";
-                httpUtils.async(url, RequestCode.GET_BEIJING_ROOM);
+                data.clear();
+                data.put("m","sys");
+                data.put("act", "getroom");
+                data.put("id_kind", "1");
+                httpUtils.async(RequestCode.GET_BEIJING_ROOM, data);
                 break;
             case "红包牛牛":
                 httpUtils = new HttpUtils(PlayRoomActivity.this, PlayRoomActivity.this, "正在加载...", true);
-                url = "http://lottery.blmshop.com/?m=sys&act=getroom&id_kind=1";
-                httpUtils.async(url, RequestCode.GET_RED_ROOM);
+                data.clear();
+                data.put("m","sys");
+                data.put("act", "getroom");
+                data.put("id_kind", "1");
+                httpUtils.async(RequestCode.GET_RED_ROOM, data);
                 break;
         }
     }
@@ -151,6 +159,7 @@ public class PlayRoomActivity extends BaseActivity implements RequestResult {
 
     /**
      * 联网结果
+     *
      * @param result
      * @param requestCode
      */
