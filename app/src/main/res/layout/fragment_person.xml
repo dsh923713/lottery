@@ -12,8 +12,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_head"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:src="@mipmap/ic_launcher" />
 
@@ -26,7 +26,7 @@
             android:layout_marginTop="3dp"
             android:text="@string/app_name"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_login_style"
@@ -35,9 +35,9 @@
             android:layout_below="@+id/tv_name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="3dp"
-            android:text="(当前是用QQ登录)"
+            android:text="(当前是用账号登录)"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
     </RelativeLayout>
 
     <TextView

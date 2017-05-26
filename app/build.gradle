@@ -66,4 +66,7 @@ dependencies {
 
     //底部弹窗
     compile 'me.shaohui:bottomdialog:1.1.9'
+
+    //仿微信相册选择页
+    compile 'com.zhihu.android:matisse:0.4.3'
 }

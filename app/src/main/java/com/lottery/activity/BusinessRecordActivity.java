@@ -295,8 +295,8 @@ public class BusinessRecordActivity extends BaseActivity implements SwipeRefresh
                 data.addAll(bean.getResult());
                 adapter.notifyDataSetChanged();
             }
-        }
-        showShortToast(bean.getMessage());
+        } else
+            showShortToast(bean.getMessage());
     }
 
     @Override

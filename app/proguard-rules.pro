@@ -38,3 +38,15 @@
 -dontwarn cn.jiguang.**
 -keep class cn.jiguang.** { *; }
 
+
+#相册选择器 使用Glide加载图片
+-dontwarn com.squareup.picasso.**
+#-dontwarn com.bumptech.glide.**
+
+#AndPermission运行时权限混淆
+-keepclassmembers class ** {
+    @com.yanzhenjie.permission.PermissionYes <methods>;
+}
+-keepclassmembers class ** {
+    @com.yanzhenjie.permission.PermissionNo <methods>;
+}

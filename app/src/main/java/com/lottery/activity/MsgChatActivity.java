@@ -1,6 +1,9 @@
 package com.lottery.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -51,6 +54,8 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
     TextView tv_num_time; //期数
     @BindView(R.id.tv_lead_time)
     TextView tv_lead_time; //抢庄时间
+    @BindView(R.id.tv_select_time)
+    TextView tv_select_time; //抢庄或下注时间
     @BindView(R.id.rv_record)
     RecyclerView rv_record; //下注玩家列表
     @BindView(R.id.tv_bottom_pour_record)
@@ -85,7 +90,8 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
     private CommonAdapter<String> recordAdapter;
 
     private boolean isShow;//是否显示投注记录
-    long time = 5 * 60; //抢庄时间5分钟
+    long lead_up_time = 10; //抢庄时间1分钟
+    long bottom_pour_time = 10; //下注时间1分钟
 
     private boolean isClick1; //是否选择下注100
     private boolean isClick2; //是否选择下注200
@@ -99,11 +105,23 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    time--;
-                    tv_lead_time.setText(DateUtil.getCutDown(time));
-                    if (time == 0) { //抢庄时间截止 不能继续点击抢庄
-                        timer.cancel();
+                    if (lead_up_time != 0){
+                        lead_up_time--;
+                        tv_select_time.setText(R.string.lead_up_time);//抢庄时间
+                        tv_lead_time.setText(DateUtil.getCutDown(lead_up_time));
+                        tv_bottom_pour.setClickable(false);//抢庄时间 不能点击下注
+                    }else if (lead_up_time == 0) { //抢庄时间截止 不能继续点击抢庄
                         tv_lead_up.setClickable(false);
+                        if (bottom_pour_time != 0){
+                            bottom_pour_time--;
+                            tv_lead_up.setClickable(false);
+                            tv_select_time.setText(R.string.bottom_pour_time);//下注时间
+                            tv_lead_time.setText(DateUtil.getCutDown(bottom_pour_time));
+                            tv_bottom_pour.setClickable(true);//抢庄时间 不能点击下注
+                        }
+                        if (bottom_pour_time == 0){
+                            tv_bottom_pour.setClickable(false);
+                        }
                     }
                 }
             });
@@ -115,6 +133,8 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
     private BaseBottomDialog dialog; //底部弹窗--抢庄金额输入
     private int id; //房间id
     private String cname;//房间名称
+    private int curlistid;
+    private JPushToMyReceiver receiver; //接收JPush发送过来的广播
 
     public MsgChatActivity() {
         super(R.layout.activity_msg_chat);
@@ -137,6 +157,7 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void initView() {
         setTitle("");//标题为空
+        registerReceiver();//注册广播 接收极光推送的消息
         setLeftIcon(R.mipmap.ic_back, "", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,6 +214,16 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
             }
         });
         isSend();
+    }
+
+    /**
+     * 注册广播
+     */
+    private void registerReceiver(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.lottery.JPUSH_RECEIVER");
+        receiver = new JPushToMyReceiver();
+        registerReceiver(receiver,filter);
     }
 
     /**
@@ -397,6 +428,10 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
             timer.cancel();
             task.cancel();
         }
+        if (receiver != null){ //注销广播
+            unregisterReceiver(receiver);
+            receiver = null;
+        }
     }
 
     /**
@@ -435,4 +470,14 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
             // 强制隐藏软键盘
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+    class JPushToMyReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String msg = intent.getStringExtra("msg");
+            showShortToast("执行....."+msg);
+        }
+    }
+
 }
