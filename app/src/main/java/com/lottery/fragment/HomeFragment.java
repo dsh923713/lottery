@@ -21,12 +21,8 @@ import com.lottery.adapter.HomeAdapter;
 import com.lottery.base.BaseFragment;
 import com.lottery.base.RequestResult;
 import com.lottery.bean.HomeBean;
-import com.lottery.bean.RoomBean;
-import com.lottery.finals.RequestCode;
-import com.lottery.utils.GsonUtil;
 import com.lottery.utils.HttpUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

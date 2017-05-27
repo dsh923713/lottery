@@ -7,14 +7,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lottery.R;
 import com.lottery.base.BaseActivity;
 import com.lottery.base.RequestResult;
 import com.lottery.bean.LoginBean;
 import com.lottery.finals.RequestCode;
-import com.lottery.utils.ClickUtil;
 import com.lottery.utils.ExampleUtil;
 import com.lottery.utils.GsonUtil;
 import com.lottery.utils.HttpUtils;
@@ -164,6 +162,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         if (bean.getCode() == 0) {
             SPUtil.saveString("alias", alias);
             SPUtil.saveString("pwd", pwd);
+            SPUtil.saveInt("id_user",bean.getId_user());
             startActivityAndFinish(HomeActivity.class);
         }
         showShortToast(bean.getMessage());
@@ -171,6 +170,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onFailure(String result, String requestCode) {
-
+        showShortToast(result);
     }
 }

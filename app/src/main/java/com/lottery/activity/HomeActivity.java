@@ -70,18 +70,4 @@ public class HomeActivity extends BaseActivity {
     protected void getBundleExtras(Bundle extras) {
 
     }
-
-//    /**
-//     * 切换fragment页面
-//     *
-//     * @param fragment
-//     */
-//    private void replaceFragment(Fragment fragment) {
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction beginTransaction = fragmentManager.beginTransaction();
-//        beginTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//        beginTransaction.replace(R.id.content, fragment);
-//        beginTransaction.commit();
-//    }
-
 }

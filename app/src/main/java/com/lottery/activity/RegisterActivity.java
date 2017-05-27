@@ -15,7 +15,6 @@ import com.lottery.finals.RequestCode;
 import com.lottery.utils.DateUtil;
 import com.lottery.utils.GsonUtil;
 import com.lottery.utils.HttpUtils;
-import com.lottery.utils.LogUtils;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -38,7 +38,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="5dp"
-                    android:text="@string/lead_up_time"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
@@ -121,12 +120,12 @@
                     android:id="@+id/tv_bottom_pour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
                     android:background="@color/tff7800"
                     android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingTop="5dp"
+                    android:visibility="gone"
                     android:text="@string/bottom_pour"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
@@ -139,6 +138,7 @@
                     android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:visibility="gone"
                     android:paddingTop="5dp"
                     android:text="@string/lead_up"
                     android:textColor="@color/white"

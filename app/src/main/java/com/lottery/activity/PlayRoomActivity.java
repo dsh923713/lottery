@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -19,7 +18,6 @@ import com.lottery.base.BaseActivity;
 import com.lottery.base.RequestResult;
 import com.lottery.bean.RoomBean;
 import com.lottery.finals.RequestCode;
-import com.lottery.fragment.HomeFragment;
 import com.lottery.utils.GsonUtil;
 import com.lottery.utils.HttpUtils;
 

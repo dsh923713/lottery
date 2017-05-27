@@ -40,14 +40,14 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
-        android:name=".MyApplication"
+        android:name="com.lottery.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Base.AppTheme">
         <activity
-            android:name=".activity.LoginActivity"
+            android:name="com.lottery.activity.LoginActivity"
             android:theme="@style/NOTranslucent.AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,23 +57,23 @@
         </activity>
         <!--注册-->
         <activity
-            android:name=".activity.RegisterActivity"
+            android:name="com.lottery.activity.RegisterActivity"
             android:configChanges="orientation|keyboardHidden" />
         <!--首页-->
         <activity
-            android:name=".activity.HomeActivity"
+            android:name="com.lottery.activity.HomeActivity"
             android:configChanges="orientation|keyboardHidden" />
         <!--游戏房间-->
         <activity
-            android:name=".activity.PlayRoomActivity"
+            android:name="com.lottery.activity.PlayRoomActivity"
             android:configChanges="orientation|keyboardHidden" />
         <!--交易记录-->
         <activity
-            android:name=".activity.BusinessRecordActivity"
+            android:name="com.lottery.activity.BusinessRecordActivity"
             android:configChanges="orientation|keyboardHidden" />
         <!--聊天-->
         <activity
-            android:name=".activity.MsgChatActivity"
+            android:name="com.lottery.activity.MsgChatActivity"
             android:configChanges="orientation|keyboardHidden" />
 
         <!-- Required SDK 核心功能-->
@@ -159,7 +159,7 @@
 
         <!-- User defined. 用户自定义的广播接收器-->
         <receiver
-            android:name=".service.JPushReceiver"
+            android:name="com.lottery.service.JPushReceiver"
             android:enabled="true">
             <intent-filter>
                 <!--Required 用户注册SDK的intent-->

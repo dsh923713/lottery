@@ -22,23 +22,29 @@ import android.widget.TextView;
 import com.lottery.R;
 import com.lottery.adapter.MsgChatAdapter;
 import com.lottery.base.BaseActivity;
+import com.lottery.base.RequestResult;
 import com.lottery.bean.MsgBean;
+import com.lottery.bean.MsgChatBean;
+import com.lottery.finals.RequestCode;
 import com.lottery.utils.DateUtil;
+import com.lottery.utils.GsonUtil;
+import com.lottery.utils.HttpUtils;
+import com.lottery.utils.LocalBroadManager;
 import com.lottery.utils.LogUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.shaohui.bottomdialog.BaseBottomDialog;
 import me.shaohui.bottomdialog.BottomDialog;
 
-public class MsgChatActivity extends BaseActivity implements View.OnClickListener {
+public class MsgChatActivity extends BaseActivity implements View.OnClickListener, RequestResult {
     private static final String TAG = "DSH -> MsgChatActivity";
     @BindView(R.id.rv_msg)
     RecyclerView rv_msg; //消息列表
@@ -90,51 +96,22 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
     private CommonAdapter<String> recordAdapter;
 
     private boolean isShow;//是否显示投注记录
-    long lead_up_time = 10; //抢庄时间1分钟
-    long bottom_pour_time = 10; //下注时间1分钟
-
     private boolean isClick1; //是否选择下注100
     private boolean isClick2; //是否选择下注200
     private boolean isClick3; //是否选择下注300
     private boolean isClick5; //是否选择下注500
 
-    private Timer timer = new Timer();
-    private TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (lead_up_time != 0){
-                        lead_up_time--;
-                        tv_select_time.setText(R.string.lead_up_time);//抢庄时间
-                        tv_lead_time.setText(DateUtil.getCutDown(lead_up_time));
-                        tv_bottom_pour.setClickable(false);//抢庄时间 不能点击下注
-                    }else if (lead_up_time == 0) { //抢庄时间截止 不能继续点击抢庄
-                        tv_lead_up.setClickable(false);
-                        if (bottom_pour_time != 0){
-                            bottom_pour_time--;
-                            tv_lead_up.setClickable(false);
-                            tv_select_time.setText(R.string.bottom_pour_time);//下注时间
-                            tv_lead_time.setText(DateUtil.getCutDown(bottom_pour_time));
-                            tv_bottom_pour.setClickable(true);//抢庄时间 不能点击下注
-                        }
-                        if (bottom_pour_time == 0){
-                            tv_bottom_pour.setClickable(false);
-                        }
-                    }
-                }
-            });
-        }
-    };
-    private int size;
     private TextView tv_lead_up_money_sure; //抢庄确认
     private EditText et_lead_up_money; //抢庄金额
+    private String money;
     private BaseBottomDialog dialog; //底部弹窗--抢庄金额输入
     private int id; //房间id
     private String cname;//房间名称
     private int curlistid;
     private JPushToMyReceiver receiver; //接收JPush发送过来的广播
+    Map<String, String> map = new HashMap<>(); //参数集合
+    private HttpUtils httpUtils;
+
 
     public MsgChatActivity() {
         super(R.layout.activity_msg_chat);
@@ -157,6 +134,7 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void initView() {
         setTitle("");//标题为空
+        ButterKnife.bind(this);
         registerReceiver();//注册广播 接收极光推送的消息
         setLeftIcon(R.mipmap.ic_back, "", new View.OnClickListener() {
             @Override
@@ -172,8 +150,6 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
         });
         setStatusBar(ContextCompat.getColor(this, R.color.colorAccent));//改变状态栏颜色
         toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent)); //改变toolbar颜色
-        ButterKnife.bind(this); //绑定注入
-        timer.schedule(task, 1000, 1000);//启动定时器
         addData();
         LinearLayoutManager msgLayout = new LinearLayoutManager(this);
         rv_msg.setLayoutManager(msgLayout);//显示样式
@@ -219,11 +195,11 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
     /**
      * 注册广播
      */
-    private void registerReceiver(){
+    private void registerReceiver() {
         IntentFilter filter = new IntentFilter();
-        filter.addAction("com.lottery.JPUSH_RECEIVER");
+        filter.addAction("com.zmq.lottery.JPUSH_RECEIVER");
         receiver = new JPushToMyReceiver();
-        registerReceiver(receiver,filter);
+        LocalBroadManager.getInstance().registerReceiver(receiver, filter);
     }
 
     /**
@@ -341,6 +317,8 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
                 if (!content.contains("元")) {
                     content += "元";
                 }
+                money = content.replace("元","");
+                bottomPour();
                 MsgBean msgBean = new MsgBean(true, false, content, MsgBean.TYPE_SENT, R.drawable.xiaohei);
                 data.add(msgBean);
                 adapter.notifyItemInserted(data.size() - 1);//当有新消息，刷新recyclerview显示
@@ -354,8 +332,7 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
                 isClick5 = false;
                 checkedHowMoney();
 
-                size = recordList.size() + 1;
-                recordList.add("玩家" + size);
+                recordList.add("玩家");
                 recordAdapter.notifyItemInserted(recordList.size() - 1);
                 break;
             case R.id.tv_bottom_pour_record://投注记录
@@ -424,12 +401,8 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (timer != null) { //界面销毁 取消定时器
-            timer.cancel();
-            task.cancel();
-        }
-        if (receiver != null){ //注销广播
-            unregisterReceiver(receiver);
+        if (receiver != null) { //注销广播
+            LocalBroadManager.getInstance().unregisterReceiver(receiver);
             receiver = null;
         }
     }
@@ -446,10 +419,6 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
                 showShortToast("请输入抢庄金额！");
                 return;
             }
-//            if (!money.matches("[0-9]*")){
-//                showShortToast("请输入正确的格式");
-//                return;
-//            }
             MsgBean msgBean = new MsgBean(true, true, money, MsgBean.TYPE_SENT, R.drawable.xiaohei);
             data.add(msgBean);
             adapter.notifyItemInserted(data.size() - 1);//当有新消息，刷新recyclerview显示
@@ -471,13 +440,55 @@ public class MsgChatActivity extends BaseActivity implements View.OnClickListene
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    class JPushToMyReceiver extends BroadcastReceiver{
+    /**
+     * 下注
+     */
+    private void bottomPour() {
+        map.put("m", "zhu");
+        map.put("act", "xz");
+        map.put("id_user", "1");
+        map.put("username", "test");
+        map.put("money", "100");
+        httpUtils = new HttpUtils(this, this, "下注中...", true);
+        httpUtils.async(RequestCode.BUSINESS_BOTTOM_POUR, map);
+    }
+
+    @Override
+    public void onSuccess(String result, String requestCode) {
+        showShortToast(result);
+    }
+
+    @Override
+    public void onFailure(String result, String requestCode) {
+
+    }
+
+    /**
+     * 接收JPush推送过来的信息广播
+     */
+    class JPushToMyReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             String msg = intent.getStringExtra("msg");
-            showShortToast("执行....."+msg);
+            LogUtils.d(msg);
+            MsgChatBean bean = GsonUtil.GsonToBean(msg, MsgChatBean.class);
+            showShortToast("执行....." + bean.getStatus());
+            if (bean.getStatus().equals("created")) { //抢庄
+                tv_select_time.setText(R.string.lead_up_time);//抢庄时间
+                tv_lead_time.setText(DateUtil.getCutDown(bean.getBalance()));
+                tv_lead_up.setVisibility(View.VISIBLE);
+                tv_bottom_pour.setVisibility(View.GONE);
+            } else if (bean.getStatus().equals("zhu")) { //下注
+                tv_select_time.setText(R.string.bottom_pour_time);//下注时间
+                tv_lead_time.setText(DateUtil.getCutDown(bean.getBalance()));
+                tv_lead_up.setVisibility(View.GONE);
+                tv_bottom_pour.setVisibility(View.VISIBLE);
+            } else if (bean.getStatus().equals("success")) { //结算成功
+
+            }
+//            Map<String, String> data = GsonUtil.GsonToMaps(msg);
+//            showShortToast("执行....."+data.get("test")+data);
         }
     }
-
 }
