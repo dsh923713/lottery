@@ -39,7 +39,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     TextView tv_register; //注册
     private HttpUtils httpUtils; //联网请求类
     private Map<String, String> data = new HashMap<>();//参数集合
-    private String alias; //用户名（JPush别名）
+    private String username; //用户名（JPush别名）
     private String pwd; //密码
 
     public LoginActivity() {
@@ -85,10 +85,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
      */
     private void setAlias() {
         //用户名（设置JPush别名）
-        alias = et_name.getText().toString().trim();
+        username = et_name.getText().toString().trim();
         //密码
         pwd = et_password.getText().toString().trim();
-        if (TextUtils.isEmpty(alias)) {
+        if (TextUtils.isEmpty(username)) {
             showShortToast("用户名不能为空");
             return;
         }
@@ -96,19 +96,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             showShortToast("密码不能为空");
             return;
         }
-        if (!ExampleUtil.isValidTagAndAlias(alias)) {
+        if (!ExampleUtil.isValidTagAndAlias(username)) {
             showShortToast("别名不可用");
             return;
         }
         data.clear();
         data.put("m","sys");
         data.put("act", "login");
-        data.put("code", alias);
+        data.put("code", username);
         data.put("password", pwd);
         httpUtils = new HttpUtils(LoginActivity.this, LoginActivity.this, "正在登陆", true);
         httpUtils.async(RequestCode.LOGIN_ACCOUNT, data);
         // 调用 Handler 来异步设置别名
-        mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_ALIAS, alias));
+        mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_ALIAS, username));
     }
 
     private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
@@ -143,7 +143,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             switch (msg.what) {
                 case MSG_SET_ALIAS:
                     // 调用 JPush 接口来设置别名。
-                    if (!SPUtil.getBoolean("isSuccess" + alias)) {
+                    if (!SPUtil.getBoolean("isSuccess" + username)) {
                         Log.d(TAG, "Set alias in handler.");
                         JPushInterface.setAliasAndTags(getApplicationContext(),
                                 (String) msg.obj, null, mAliasCallback);
@@ -160,7 +160,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onSuccess(String result, String requestCode) {
         LoginBean bean = GsonUtil.GsonToBean(result, LoginBean.class);
         if (bean.getCode() == 0) {
-            SPUtil.saveString("alias", alias);
+            SPUtil.saveString("username", username);
             SPUtil.saveString("pwd", pwd);
             SPUtil.saveInt("id_user",bean.getId_user());
             startActivityAndFinish(HomeActivity.class);
